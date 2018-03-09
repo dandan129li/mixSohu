@@ -1,0 +1,38 @@
+<template>
+  <div>
+    <div if="{{prop1.column_type == 18}}" class=" ui-column ui-hor" >
+      <div class="ui-column-hd ui-hd-linear">
+        <text class="ui-column-name">{{prop1.name}}</text>
+        <div if="{{prop1.action_list}}" class="ui-column-tip">
+          <block for="{{prop1.action_list}}">
+              <text class="btn-right" onclick="routePush('Channel',{column_id:$item.column_id,column_type:$item.column_type,column_name:$item.column_name})">{{$item.tip}}</text>
+          </block>
+         </div>
+      </div>
+      <list if="{{prop1.data_list}}" class="ui-column-bd hd-shadow " style="columns:2;">
+          <list-item  type="listItem" for="{{prop1.data_list}}" class="ui-content-item" onclick="routePush('Play',{vid:$item.vid,site:$item.site,aid:$item.aid,user_id:$item.user_id})" >
+              <image src="{{$item.url_img}}" class="ui-item-image"></image>
+              <text  class="ui-item-bottom-mask" style="display:none;"></text>
+              <text  class="ui-item-bottom-title">{{$item.bottom_title_filtered}}</text>
+              <text  class="ui-item-main-title">{{$item.main_title_filtered}}</text>
+          </list-item>
+      </list>
+      <div class="ui-column-ft " style="display:none;">
+        <div class="ui-column-ft-btn ui-column-loadMore">查看更多</div>
+      </div>
+    </div>
+  <div>
+</template>
+<style src="./index.css"></style>
+<script>
+import router from '@system.router'
+export default{
+routePush: function (path,params) {
+      //  router.clear();
+        router.push({
+         uri:path,
+          params: params
+        })
+      }
+}
+</script>

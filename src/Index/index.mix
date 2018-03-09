@@ -1,0 +1,34 @@
+<template>
+<!-- index  -->
+  <div class="page">
+    <div class="ui-navbar ui-navbar-shadow">
+      <image  class="nav-logo" src="../Common/logo.png" ></image>
+      <list class="scroll-view_H" id="tabList" scrollpage="true">
+          <list-item type="listItem" for="{{channelList}}" >
+            <text id="{{$item.channel_id}}" class="scroll-view-item_H {{$item.active}}" onclick="routePush('Index', {channel_id:$item.channel_id,channeled:$item.channeled})" >
+                <span>{{$item.name}}</span>
+            </text>
+          </list-item>
+        </list>
+    </div>
+    <div for="{{playList}}" id="{{$item.vid}}"  class='section play-list' >
+    <text>{{$idx}}</text>
+     <block if="{{$idx!==currPlayIndex}}">
+      <div class='player-container' id="{{$item.vid}}">
+        <div class="v-cover-container"  onclick="play">
+        <stack>
+          <image class='v-cover' src='{{$item.cover}}' style='resize-mode:contain'></image>
+          <div class='v-mask'></div>
+          <text class='v-title'>{{$item.video_name}}</text>
+          <image class='v-play-btn v-btn' src='../../images/play-ico.png' ></image>
+          <text class='v-info'>{{$item.play_count_short}}播放 | {{$item.time_length_format}}</text>
+          </stack>
+        </div>
+      </div>
+     </block>
+     </div>
+
+  </div>
+</template>
+<style src="./index.css"></style>
+<script src="./index.js"></script>
