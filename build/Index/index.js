@@ -191,7 +191,7 @@
 	                      "events": {
 	                        "scrollbottom": "onReachBottom"
 	                      },
-	                      "shown": function () {return this.playList.length>0},
+	                      "shown": function () {return this.$item.channel_id==this.currentChannelId&&this.playList.length>0},
 	                      "children": [
 	                        {
 	                          "type": "list-item",
@@ -916,9 +916,9 @@
 	    "height": "100px",
 	    "lineHeight": "100px",
 	    "paddingTop": "0px",
-	    "paddingRight": "35px",
+	    "paddingRight": "25px",
 	    "paddingBottom": "0px",
-	    "paddingLeft": "35px",
+	    "paddingLeft": "25px",
 	    "color": "#1a1a1a",
 	    "fontSize": "34px",
 	    "textDecoration": "none"

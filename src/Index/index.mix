@@ -16,7 +16,7 @@
         </div>
         <refresh class="refresh" onrefresh="refresh" refreshing="{{isRefreshing}}">
 
-    <list class="section" scrollpage="{{scrollPage}}"  onscrollbottom="onReachBottom"  if="{{playList.length>0}}">
+    <list class="section" scrollpage="{{scrollPage}}"  onscrollbottom="onReachBottom"  if="{{$item.channel_id==currentChannelId &&playList.length>0}}">
       <list-item type="listItem"  id="{{$item.vid}}"  for="{{playList}}" class=' play-list' >
       <stack>
         <block if="{{$idx!==currPlayIndex}}">
