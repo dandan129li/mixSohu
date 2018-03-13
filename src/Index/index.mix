@@ -2,9 +2,9 @@
 <!-- index  -->
   <div class="page">
     <tabs class="scroll-view_H" id="tabList1"  onchange="changeTabactive" index="0">
+        <image  class="nav-logo" src="../Common/logo.png" ></image>
         <tab-bar  mode="scrollable">
-          <image  class="nav-logo" src="../Common/logo.png" ></image>
-          <text id="{{$item.channel_id}}" for="{{channelList}}" if="{{$idx!==0}}" class="scroll-view-item_H tab-text"  >
+          <text id="{{$item.channel_id}}" for="{{channelList}}" class="scroll-view-item_H tab-text"  >
               <span>{{$item.name}}</span>
           </text>
         </tab-bar>
@@ -54,7 +54,7 @@
       </list-item>
      </list>
      </refresh>
-     
+
      </div>
      </tab-content>
      </tabs>

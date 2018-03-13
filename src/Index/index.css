@@ -11,7 +11,12 @@
 .nav-logo{
   width: 217px;
   height: 41px;
+  margin-top:40px;
   margin-left: 10px;
+}
+tab-bar{
+  margin-left:235px;
+  margin-top:-70px;
 }
 .ui-navbar{
   flex-direction: row;

@@ -89,20 +89,20 @@
 	      },
 	      "children": [
 	        {
+	          "type": "image",
+	          "attr": {
+	            "src": "../Common/logo.png"
+	          },
+	          "classList": [
+	            "nav-logo"
+	          ]
+	        },
+	        {
 	          "type": "tab-bar",
 	          "attr": {
 	            "mode": "scrollable"
 	          },
 	          "children": [
-	            {
-	              "type": "image",
-	              "attr": {
-	                "src": "../Common/logo.png"
-	              },
-	              "classList": [
-	                "nav-logo"
-	              ]
-	            },
 	            {
 	              "type": "text",
 	              "attr": {
@@ -110,7 +110,6 @@
 	              },
 	              "id": function () {return this.$item.channel_id},
 	              "repeat": function () {return this.channelList},
-	              "shown": function () {return this.$idx!==0},
 	              "classList": [
 	                "scroll-view-item_H",
 	                "tab-text"
@@ -891,7 +890,12 @@
 	  ".nav-logo": {
 	    "width": "217px",
 	    "height": "41px",
+	    "marginTop": "40px",
 	    "marginLeft": "10px"
+	  },
+	  "tab-bar": {
+	    "marginLeft": "235px",
+	    "marginTop": "-70px"
 	  },
 	  ".ui-navbar": {
 	    "flexDirection": "row",
