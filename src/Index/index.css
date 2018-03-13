@@ -43,8 +43,11 @@
  }
  .current{
    color: #ff382e;
-
  }
+ .tab-text:active {
+   color: #f76160;
+ }
+
  .navigator-hover {
     color: #ff382e;
     background-color: rgba(0, 0, 0, 0.1);
@@ -93,4 +96,20 @@
   color: #545454;
   align-items:center;
   line-height: 40px;
+}
+.item-container{
+  flex-direction: column;
+}
+.item-content-circular {
+  margin-bottom: 60px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  flex:1;
+}
+.circular-1{
+  width: 100px;
+  height: 100px;
+   color:#09ba07;
 }

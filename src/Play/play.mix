@@ -1,17 +1,16 @@
 <template>
 <div class="container">
-    <div class="player" id="playerBox" style="height:422px" if="{{videoLoaded}}" >
+    <div class="player" id="playerBox" style="height: {{playHeight}}px" if="{{videoLoaded}}" >
       <video id="player" src="{{videosrc}}" poster="{{poster}}" autoplay="{{isWIFI}}"  ></video>
       <text class="wifi-tip" if="{{showNoneWifiWarning}}">您正在使用非wifi网络，播放将产生流量费用</text>
     </div>
     <div if="{{videoLoaded}}" class="no-player"  style="width:100%;">
     <!--标题 详情-->
       <div class="header">
-          <text class="title" onclick="routePush('Index',{})">{{video.video_name}}{{videosrc}}</text>
+          <text class="title">{{video.video_name}}</text>
           <text class="more-arrow-wrapper" onclick="toggleBlock('')" ><span class="more-arrow {{showDesc?'':'more-arrow-hidden'}}">^</span>
           </text>
       </div>
-
       <div class="videoInfo" if="{{showDescVisible}}" >
           <div class="videoInfo-play">
               <text class="video-play">{{video.play_count}}播放</text>
@@ -123,7 +122,7 @@
     </div>
 </div>
 </template>
-<style src="./index.css"></style>
+<style src="./play.css"></style>
 <script>
 import _ from '../Common/underscore.js'
 import common from '../Common/common.js'
@@ -135,8 +134,7 @@ import device from '@system.device'
 import network from '@system.network'
 import clipboard from '@system.clipboard'
 var useM3u8 = false;
-
-module.exports={
+export default{
       data: {
         toView: 'playerBox',
         isAndroid: true,
@@ -231,13 +229,12 @@ module.exports={
     onInit: function () {
         var me = this;
         var uid = me.user_id;
-        var vid = me.vid||99610697;
-        var aid = me.aid||9454627;
+        var vid = me.vid;
+        var aid = me.aid;
           me.uid=uid;
           me.vid=vid;
           me.aid=aid;
-          console.log(me.vid)
-  //      me.getDeviceInfo();
+        me.getDeviceInfo();
         //网络状态
         network.getType({
             success: (ret) => {
@@ -261,16 +258,16 @@ module.exports={
         });
         //出品人信息
         if (uid && Number(uid) > 0) {
-      //      me.getPgcUserInfo(uid);
+            me.getPgcUserInfo(uid);
         }
         //剧集信息
         //推荐视频
         if (aid && Number(aid) > 0) {
-          //  me.getAlbumList(aid);
-        //    me.getRecomList(aid);
+            me.getAlbumList(aid);
+            me.getRecomList(aid);
         }
         //评论
-      //  me.loadCommentFirst(vid);
+        me.loadCommentFirst(vid);
     },
     getPgcUserInfo: function(uid) {
         var me = this;
@@ -447,7 +444,6 @@ module.exports={
             }
         });
     },
-
     toggleAlbumShow: function(e) {
         var that = this;
         that.albumShown= !this.albumShown;
@@ -577,7 +573,7 @@ module.exports={
                     me.poster= video.video_big_pic || video.hor_w8_pic || '';
                 if (video && video.user_id && (!me.uid || me.uid == '0')) {
                         me.uid= video.user_id;
-                //    me.getPgcUserInfo(video.user_id);
+                    me.getPgcUserInfo(video.user_id);
                 }
 
                 setTimeout(function(){
@@ -649,11 +645,11 @@ module.exports={
       me.loadCommentFirst(vid);
     },
     routePush: function (path,params) {
-  //  this.refreshUrl(params)
-      router.push({
-       uri:path,
-        params: params
-      })
+    this.refreshUrl(params)
+  //    router.push({
+  //     uri:path,
+  //      params: params
+  //    })
   }
 }
 </script>

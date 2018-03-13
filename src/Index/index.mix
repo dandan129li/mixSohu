@@ -1,17 +1,22 @@
 <template>
 <!-- index  -->
   <div class="page">
-    <div class="ui-navbar ui-navbar-shadow">
-      <image  class="nav-logo" src="../Common/logo.png" ></image>
-      <list class="scroll-view_H" id="tabList" scrollpage="true">
-          <list-item type="listItem" for="{{channelList}}" >
-            <text id="{{$item.channel_id}}" class="scroll-view-item_H {{$item.active}}" onclick="routePush('Index', {channel_id:$item.channel_id,channeled:$item.channeled})" >
-                <span>{{$item.name}}</span>
-            </text>
-          </list-item>
-      </list>
-    </div>
-    <list class="section" scrollpage="{{scrollpage}}"  onscrollbottom="onReachBottom">
+    <tabs class="scroll-view_H" id="tabList1"  onchange="changeTabactive" index="0">
+        <tab-bar  mode="scrollable">
+          <image  class="nav-logo" src="../Common/logo.png" ></image>
+          <text id="{{$item.channel_id}}" for="{{channelList}}" if="{{$idx!==0}}" class="scroll-view-item_H tab-text"  >
+              <span>{{$item.name}}</span>
+          </text>
+        </tab-bar>
+        <tab-content class="tab-content">
+        <div class="item-container"  for="{{channelList}}">
+        <div class="item-content-circular" if="{{playList.length<1}}">
+          <progress class="circular-1" type="circular"></progress>
+          <text class="item-title">正在努力加载中······</text>
+        </div>
+        <refresh class="refresh" onrefresh="refresh" refreshing="{{isRefreshing}}">
+
+    <list class="section" scrollpage="{{scrollPage}}"  onscrollbottom="onReachBottom"  if="{{playList.length>0}}">
       <list-item type="listItem"  id="{{$item.vid}}"  for="{{playList}}" class=' play-list' >
       <stack>
         <block if="{{$idx!==currPlayIndex}}">
@@ -20,7 +25,7 @@
           <stack>
             <image class='v-cover' src='{{$item.cover}}' style='resize-mode:contain'></image>
             <div class='v-mask'></div>
-            <div class='v-title'><text>{{$item.video_name}}{{isWIFI}}</text></div>
+            <div class='v-title'><text>{{$item.video_name}}</text></div>
             <div class='v-play-btn'>
               <image class='v-btn' src='../Common/images/play-ico.png' ></image>
             </div>
@@ -48,6 +53,12 @@
           <text>加载更多</text>
       </list-item>
      </list>
+     </refresh>
+     
+     </div>
+     </tab-content>
+     </tabs>
+
   </div>
 </template>
 <style src="./index.css"></style>

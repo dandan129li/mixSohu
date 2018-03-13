@@ -15,12 +15,14 @@ module.exports = {
         currentChannelId:0,
         playList:[],
         queryData:{},
+        isRefreshing: false,
+        timer:null,
         video : {},
         playUrl : '',
         currPlayIndex : '',
         likeList : {},
         page : -1,
-        showshow:false,
+        scrollPage:false,
         currPlayedVideo:{},
         loadingMore:false,
         isWIFI : false,
@@ -59,7 +61,7 @@ module.exports = {
     onReady: function () {
         var self =this;
         self.chlList();
-        self.chlData();
+        self.chlData('fresh');
     },
     //频道一级菜单
     chlList:function(){
@@ -82,15 +84,21 @@ module.exports = {
       });
     },
     //频道页面数据
-    chlData:function(){
+    chlData:function(act){
       var self =this;
+      // if(act=='fresh'){
+      //    self.playList=[];
+      // }
       fetch.fetch({
         url: common.api_uri + '/channel/' + self.options.channel_id +'/'+ gData.uid +'/rc/v1?passport='+gData.passport+'&flat=6&isH5=1',
           callback:function (rst) {
               var rst=JSON.parse(rst.data);
               if(rst && rst.data && rst.data.columns){
                 var playList = [];
-                var orgList = self.playList;
+                var orgList =[];
+                if(act=='more'){
+                   orgList = self.playList;
+                }
                 var page = self.page;
                 self.buildColumns(rst.data.columns, function(playList){
                   playList = orgList.concat(playList);
@@ -103,12 +111,15 @@ module.exports = {
                   }
                 });
               }
+              self.isRefreshing = false
+              clearTimeout(self.timer)
+              self.timer = null
           }
       });
     },
     onReachBottom: function() {
       this.loadingMore=true;
-      this.chlData();
+      this.chlData('more');
         // Do something when page reach bottom.
     },
     upper: function(evt) {
@@ -148,11 +159,9 @@ module.exports = {
                 chlInfo.active="current";
                 self.toView=curId;
                 pos=i;
-                self.scrollLeft=pos*100;
             }
                 tags.push(chlInfo);
         }
-
         return tags;
     },
     getVideoLikeNum: function(vids,callback){
@@ -240,9 +249,6 @@ module.exports = {
         me.playList = playList;
         me.currPlayIndex = index;
         me.currPlayUrl = playList[index].playUrl;
-        // if (me.videoContext === undefined) {
-          // me.videoContext =  me.$element('player');
-        // }
       }
     },
     play: function (dataset) {
@@ -250,8 +256,6 @@ module.exports = {
       var site = dataset.site;
       var index = dataset.index;
       this.currPlayIndex = index;
-      console.log('this.currPlayIndex:'+this.currPlayIndex)
-      console.log('video'+this.videoContext)
       this.playVideo(vid, site,index);
     },
     playNext: function(event){
@@ -301,17 +305,17 @@ module.exports = {
         self.likeList=_likeList;
       }
     },
-    jumpToPlay: function(event){
-      var dataset = event.currentTarget.dataset;
-      var index = dataset.index;
-      var video = this.playList[index];
-      if (this.likeList[video.vid]){
-        video.likeNum = this.likeList[video.vid].likeNum;
-      }
-      var url = common.makeWxPlayUrl(video);
-      this.videoContext && this.videoContext.pause();
-      this.routePush('Play',url);
-    },
+    // jumpToPlay: function(event){
+    //   var dataset = event.currentTarget.dataset;
+    //   var index = dataset.index;
+    //   var video = this.playList[index];
+    //   if (this.likeList[video.vid]){
+    //     video.likeNum = this.likeList[video.vid].likeNum;
+    //   }
+    //   var url = common.makeWxPlayUrl(video);
+    //   this.videoContext && this.videoContext.pause();
+    //   this.routePush('Play',url);
+    // },
     playError : function(e){
       console.log('error:'+e);
     },
@@ -335,11 +339,36 @@ module.exports = {
             });
         }
     },
-    routePush: function (path,params) {
-      if(path==='Index'){
-        this.refreshUrl(params)
-        return false;
+    goIndex: function (name,index) {
+      this.$element(name)&&this.$element(name).scrollTo({ index: index, smooth: true })
+    },
+    refresh: function(e){
+      var that = this;
+      that.isRefreshing = e.refreshing
+      this.chlData('fresh');
+      if (this.timer === null) {
+        this.timer = setTimeout(() => {
+          // 关闭刷新状态
+          this.isRefreshing = false;
+          prompt.showToast({
+            message: '刷新完成'
+          })
+          clearTimeout(this.timer)
+          this.timer = null
+        },3000)
       }
+    },
+    changeTabactive: function (e) {
+      // 切换tab
+      console.log('----------切换tab: ' + e.index);
+      console.log('----------channel_id: ' +this.options.channel_id);
+      if(e.index==0&&this.options.channel_id==0){return false;}
+      // this.playList=[];
+      this.options.channel_id=this.channelList&&this.channelList[e.index].channel_id;
+      this.currentChannelId=this.options.channel_id;
+      this.chlData('fresh');
+    },
+    routePush: function (path,params) {
       router.push({
        uri:path,
         params: params
