@@ -1,414 +1,659 @@
 <template>
 <div class="container">
-<text>ffjlaflajfldjfldsfjsalfjasl</text>
-  <div  class="ui-navbar ui-navbar-shadow item-container">
-  <div class="s1"><image src="../Common/logo.png" ></image></div>
-    <list class="scroll-view_H" id="tabList" scrollpage="true">
-      <list-item type="listItem" for="{{channelList}}" >
-      <text id="{{$item.channel_id}}" class="scroll-view-item_H {{$item.active}}" onclick="routePush('Index', {channel_id:$item.channel_id,channeled:$item.channeled})" >
-          <span>{{$item.name}}</span>
-      </text>
-      </list-item>
-      </list>
-  </div>
+    <div class="player" id="playerBox" style="height:422px" if="{{videoLoaded}}" >
+      <video id="player" src="{{videosrc}}" poster="{{poster}}" autoplay="{{isWIFI}}"  ></video>
+      <text class="wifi-tip" if="{{showNoneWifiWarning}}">您正在使用非wifi网络，播放将产生流量费用</text>
+    </div>
+    <div if="{{videoLoaded}}" class="no-player"  style="width:100%;">
+    <!--标题 详情-->
+      <div class="header">
+          <text class="title" onclick="routePush('Index',{})">{{video.video_name}}{{videosrc}}</text>
+          <text class="more-arrow-wrapper" onclick="toggleBlock('')" ><span class="more-arrow {{showDesc?'':'more-arrow-hidden'}}">^</span>
+          </text>
+      </div>
 
-  <div if="{{showFocus}}" class="section swiper swiper-section">
-        <swiper class="focus-swiper" interval="{{interval}}" indicator="false">
-        <block for="{{imgUrls}}">
-                <div class="focus-item"   onclick="routePush('Play',{vid:$item.vid,site:$item.site,aid:$item.aid,user_id:$item.user_id})" >
-                <stack>
-                <image src="{{$item.pic}}" class="focus-image"></image>
-                <text if="{{$item.main_title}}" class="focus-main-title">{{$item.main_title}}</text>
-                </stack>
-                  <text class="focus-mask"></text>
+      <div class="videoInfo" if="{{showDescVisible}}" >
+          <div class="videoInfo-play">
+              <text class="video-play">{{video.play_count}}播放</text>
+              <text class="video-publishTime">{{video.publish_time}}</text>
+          </div>
+          <text class="video-desc">{{video.video_desc}}</text>
+      </div>
+      <div class="userinfo top-shadow">
+          <image class="userinfo-avatar" src="{{userInfo.small_pic}}" ></image>
+          <div class="userinfo-text">
+              <text class="userinfo-nickname">{{userInfo.nickname}}</text>
+              <div if="{{video.keyword&&video.keyword.length}}" class="tag-list-div">
+                  <text class="tag-list fix-android-align " for="{{video.keyword}}">
+                    <span>{{$item}}</span>
+                  </text>
+              </div>
+          </div>
+      </div>
+      <!--出品人剧集-->
+      <div class="album wrap top-shadow" if="{{albumList&&albumList.length}}">
+          <div class="videoInfo-tip">
+            <text class="title">  出品人剧集</text>
+            <text class="more" onclick="toggleAlbumShow">查看更多</text>
+          </div>
+          <list class="album-list {{loadingAlbumList?'loading-album1':''}} {{minAlbumPage==1?'first-done':''}} {{maxAlbumPage==albumPageCount?'last-done':''}}"  onscrolltop="albumLoadFirst" onscrollbottom="albumLoadLast" id="cprList"   scrollpage="true">
+                  <list-item type="listItem" for="{{albumList}}" id="albumItem{{$item.vid}}"  onclick="routePush('Play',{vid:$item.vid,site:$item.site,aid:$item.aid,user_id:$item.user_id})" >
+                      <text class="album-text {{$item.vid==vid?'curr':''}}">{{$item.video_name}}</text>
+                  </list-item>
+          </list>
+          <text class="dummy" if="{{albumList.length <= 2 && albumItemCount > 2}}">
+              <span>目前只有一个视频</span>
+            </text>
+      </div>
+      <!--相关推荐-->
+      <div class="recom  wrap top-shadow" if="{{recom&&recom.length}}" >
+        <div class="videoInfo-tip">
+          <text class="title">  相关推荐</text>
+          <text class="more" onclick="toggleBlock('recomShown')">查看更多</text>
+        </div>
+        <list class="recom-list" style="columns:2;">
+            <list-item type="listItem" class="recom-list-item" for="{{recom}}" onclick="routePush('Play',{vid:$item.vid,site:$item.site,aid:$item.aid,user_id:$item.user_id})" >
+                    <image  src="{{$item.hor_big_pic}}" ></image>
+                    <text>{{$item.video_name}}</text>
+            </list-item>
+        </list>
+      </div>
+      <!--评论-->
+      <div class="comment wrap top-shadow" if="{{comment && comment.comments}}">
+          <div class="videoInfo-tip">
+            <text class="title">评论</text>
+            <text class="more"  if="{{comment.cmt_sum > 3}}">共{{comment.participation_sum}}人参与/{{comment.cmt_sum}}条评论</text>
+          </div>
+          <list class="comment-list" if="{{comment.comments && comment.comments.length > 0}}" style="columns:1;">
+            <list-item for="{{comment.comments}}"  type="listItem" class="item" >
+              <div class="user-info">
+                  <div class="">
+                      <image  src="{{$item.passport.img_url}}"  ></image>
+                      <text>{{$item.passport.nickname}}</text>
+                  </div>
+                  <text class="date">{{$item.publishDate}}</text>
+              </div>
+              <div class="comment-content">
+                  <div class="floor-box" if="{{$item.comments && $item.comments.length}}" >
+                  </div>
+                  <text class="content">{{$item.content}}</text>
                 </div>
-                </block>
-         </swiper>
-  </div>
-  <div class="section video-list">
-        <block for="{{columnList}}">
-        <comp-a prop1="{{$item}}">
-        </comp-a>
-        </block>
+            </list-item >
+          </list>
+          <text if="{{comment.comments && comment.comments.length == 0}}" class="no-comment">
+              暂无评论
+          </text>
+      </div>
+    </div>
+ <!--出品人剧集-->
+    <div show="{{albumShown}}" class="fix-popup" if="{{albumList&&albumList.length}}" style="height: {{pageHeight}}px; top: {{playHeight}}px;">
+      <div class="popup-title">
+          <text class="title">出品人剧集</text>
+          <text class="close" onclick="toggleAlbumShow">关闭</text>
+      </div>
+      <list class="album-popup-list {{minAlbumPage==1?'first-done':''}} {{maxAlbumPage==albumPageCount?'last-done':''}}"  style="height: {{pageHeight-popupTitleHeight}}px; columns:1;" onscrolltop="albumLoadFirst" onscrollbottom="albumLoadLast"  scrollpage="true">
+        <list-item class="album-item item-{{$idx}}" for="{{albumList}}"  id="albumItemPopup{{$idx}}"  onclick="routePush('Play',{vid:$item.vid,site:$item.site,aid:$item.aid,user_id:$item.user_id})"  type="listItem">
+          <text class="title {{$item.vid==vid?'curr':''}}">{{$item.video_name}}</text>
+          <div class="info">
+            <text>{{$item.playCount}}次播放</text>
+            <text>{{$item.publishDate}}</text>
+          </div>
+        </list-item>
+        <list-item type="loadMore" class="load-more" if="{{albumItemCount> 4}}">
+              <progress type="circular"></progress>
+              <text>加载更多</text>
+          </list-item>
+        </list>
+    </div>
+     <!--相关推荐more-->
+    <div show="{{recomShown}}" class="fix-popup" if="{{recomAll&&recomAll.length}}" style="height: {{pageHeight}}px; top: {{playHeight}}px;" >
+      <div class="popup-title">
+          <text class="title">相关推荐</text>
+          <text class="close" onclick="toggleBlock('recomShown')">关闭</text>
+      </div>
+      <list class="recom-popup-list {{minAlbumPage==1?'first-done':''}} {{maxAlbumPage==albumPageCount?'last-done':''}}"  style="height: {{pageHeight-popupTitleHeight}}px; columns:1;" >
+        <list-item class="item" for="{{recomAll}}" onclick="routePush('Play',{vid:$item.vid,site:$item.site,aid:$item.aid,user_id:$item.user_id})"  type="productLeft">
+        <image src="{{$item.hor_big_pic}}" ></image>
+          <div class="info">
+            <text class="title">{{$item.video_name}}</text>
+            <text class="play-count">{{$item.playCount}}播放</text>
+          </div>
+        </list-item>
+        </list>
     </div>
 </div>
 </template>
 <style src="./index.css"></style>
-<style>
-</style>
 <script>
-console.log(444444)
 import _ from '../Common/underscore.js'
-import Bone from '../Common/bone.js'
 import common from '../Common/common.js'
-import Promise from '../Common/promise.js'
-import fetch from '@system.fetch'
+import WxParse from '../Common/wxDiscode.js'
+import prompt from '@system.prompt'
 import router from '@system.router'
-var video_blank_img = "https://m.tv.sohu.com/upload/touch/img/blank_h5.png?v=1";
-var hashMore={"1":{column_id:0,req_params:{}}};
-  module.exports = {
-        data: {
-        options:{},
-          toView: '71010000',
-          scrollLeft: 0,
-          columnsNum:5,
-          channelList:[],
-          currentChannelId:71010000,
-          columnList:[],
-          background: ['green', 'red', 'yellow'],
-          imgUrls: [],
-          showFocus:false,
-          indicatorDots: true,
-          swiperCurrent: 0,
-          vertical: false,
-          autoplay: false,
-          interval: 3000,
-          duration: 1000,
-          queryData:{}
-        },
-        onInit: function () {
-        console.log(33333)
-          var self =this;
-          var channel_type = self.options && self.options.channel_type || 5;
-          var channel_id = self.options && self.options.channel_id ||self.channel_id|| self.currentChannelId||71010000;
-          self.currentChannelId = channel_id;
-          self.options={
-          channel_type:channel_type,
-          channel_id:channel_id
-          }
-          self.queryData= self.options;
-          console.log("currnt ---> " +channel_id);
-          //==========init model==============
-        //video List子栏目频道数据
-        this.chlVideoList = fetch.fetch({
-            url:common.api_uri + '/v4/mobile/video/list.json',
-            params:{
-                'column_id' :   self.options['column_id']   || '607',
-                'column_type': self.options['column_type']  || 18 ,
-                'page_size':  8
-            }
-        });
-    },
-    onReady: function () {
-        var self =this;
-        this.chlList();
-        this.chlData();
-    },
-    chlData:function(){
-    var self=this;
-      //频道页面数据
-      fetch.fetch({
-          url:common.api_uri + '/v6/mobile/channelPageData/list.json?channel_id='+(self.options.channel_id || 0)+'&page_size=50&channel_list_type=5&plat=17&api_key=f351515304020cad28c92f70f002261c&sver=6.2&partner=78&poid=1',
-          callback:function (rst) {
-          var rst=JSON.parse(rst.data)
-              if(rst && rst.data && rst.data.columns){
-                  var columnList =  self.buildColumns(rst.data);
-                  self.columnList= columnList;
-              }
-          }
-      });
-    },
-    chlList:function(){
-    var self=this;
-    //频道一级菜单
-          fetch.fetch({
-            url:common.api_uri + '/v6/mobile/channel/list.json?channel_list_type='+(self.options['channel_type'] || 5)+'&plat=17&api_key=f351515304020cad28c92f70f002261c&sver=6.2&partner=78&poid=1',
-            success:function (rst) {
-            var rst=JSON.parse(rst.data);
-            if(rst && rst.data && rst.data.cateCodes){
-                var a= self.buildTopNav(33,3);
-                    var channelList =self.buildTopNav(rst.data.cateCodes,self.currentChannelId);
-                    self.scrollLeft=0;
-                    self.channelList=channelList;
-                    setTimeout(function () {
-                        try {
-                            var navpos =  wx.getStorageSync('scrollLeftPos')||0;
-                        } catch (e) { }
-                        self.scrollLeft=navpos;
-                    },20);
+import fetch from '@system.fetch'
+import device from '@system.device'
+import network from '@system.network'
+import clipboard from '@system.clipboard'
+var useM3u8 = false;
 
-                }
-            }
-        });
+module.exports={
+      data: {
+        toView: 'playerBox',
+        isAndroid: true,
+        hidePopup: true,
+        videoLoaded: false,
+        albumIndex: 0,
+        duration: '',
+        albumFirstPage: 1,
+        albumScrollLeft: 0,
+        albumScrollTop: 0,
+        pageHeight: 0,
+        playHeight:0,
+        ts: new Date().getTime(),
+        isWIFI: true,//是否是Wi-Fi环境
+        showNoneWifiWarning: false,//显示视频播放非WiFi提示浮层
+        video: {},//视频信息
+        userInfo: {},//用户信息
+        recom: {},//推荐信息
+        recomAll: {},
+        albumList: {}, //剧集
+        albumPageSize: 50,
+        minAlbumPage: 0,
+        maxAlbumPage: 0,
+        albumItemCount: 0,
+        albumPageCount: 0,
+        albumShown: false,
+        albumShownOnce: false,
+        recomShown: false,
+        videosrc: '',
+        videotitle: '',
+        isEnd: false,
+        poster: '',
+        showDesc: false,
+        showDescPopup: false,
+        showDescVisible: false,
+        frozen: false,
+        commentFrozen: false,
+        loadingAlbumList: false,
+        comment: {},
+        comment_page_no: 1,
+        ratio: 2,
+        albumListWidth: 710/2,
+        albumItemWidth: 310/2,
+        albumItemMargin: 20/2,
+        albumLoadingGap: 60/2,
+        popupTitleHeight: 130/2,
+        popupAlbumItemHeight: 91/2,
+        popupAlbumItemGap: 55/2,
+        videoContext:null,
+        video:{},
+        vid:'',
+        aid:'',
+        uid:'',
+        deviceInfo:{}
+    },
+    onShareAppMessage: function () {
+        return {
+            title: '来，看我分享的视频' || this.video.video_name,
+            desc: this.video.video_desc,
+            path: '/sohutv/play/play?site=2&aid=' + this.aid + '&vid=' + this.vid + '&user_id=' + this.uid
+        }
+    },
+    onReady: function() {
     },
     goIndex: function (name,index) {
       this.$element(name)&&this.$element(name).scrollTo({ index: index, smooth: true })
     },
-    onShow: function() {
-        // Do something when page show.
-    },
-    onHide: function() {
-        // Do something when page hide.
-    },
-    onUnload: function() {
-        // Do something when page close.
-    },
-    onPullDownRefresh: function() {
-        // Do something when pull down.
-    },
-    onReachBottom: function() {
-        // Do something when page reach bottom.
-    },
-    upper: function(evt) {
-        //滚动到顶部/左边
-        try {
-            console.log("----->> ",evt);
-            wx.setStorageSync('scrollLeftPos', 0);
-        } catch (e) {
-            console.log(e);
+    getDeviceInfo: function () {
+      var that = this;
+      device.getInfo({
+        success: function (ret) {
+          that.deviceInfo =ret;
+          var ratio = 750/that.deviceInfo.screenWidth;
+              that.ratio= ratio;
+              that.albumListWidth= Math.floor(710/ratio);
+              that.albumItemWidth= Math.floor(310/ratio);
+              that.albumItemMargin= Math.floor(20/ratio);
+              that.albumLoadingGap= Math.floor(60/ratio);
+              that.popupTitleHeight= Math.floor(130/ratio);
+              that.popupAlbumItemHeight= Math.floor(91/ratio);
+              that.popupAlbumItemGap= Math.floor(55/ratio);
+              var playerBoxHeight = Math.round(0.563 * that.deviceInfo.screenWidth);
+              that.videoContext = that.$element('player');
+              that.pageHeight=that.deviceInfo.screenHeight - playerBoxHeight;
+              that.playHeight=playerBoxHeight>422?422:playerBoxHeight;
+        },
+        fail: function (erromsg, errocode) {
+          that.deviceInfo = {errocode:erromsg}
         }
+      })
+    },
+    onInit: function () {
+        var me = this;
+        var uid = me.user_id;
+        var vid = me.vid||99610697;
+        var aid = me.aid||9454627;
+          me.uid=uid;
+          me.vid=vid;
+          me.aid=aid;
+          console.log(me.vid)
+  //      me.getDeviceInfo();
+        //网络状态
+        network.getType({
+            success: (ret) => {
+              var networkType = ret
+                if (networkType['type'] !== 'wifi') {
+                  me.isWIFI=false;
+                    setTimeout(function () {
+                    me.isWIFI=true;
+                    }, 3000)
+                }
+                else{
+                    //WiFi自动播放
+                    setTimeout(function () {
+                    me.videoContext && me.videoContext.start()
+                    }, 1000);
+                }
+
+                //视频信息
+                me.getPlayInfo(vid);
+            }
+        });
+        //出品人信息
+        if (uid && Number(uid) > 0) {
+      //      me.getPgcUserInfo(uid);
+        }
+        //剧集信息
+        //推荐视频
+        if (aid && Number(aid) > 0) {
+          //  me.getAlbumList(aid);
+        //    me.getRecomList(aid);
+        }
+        //评论
+      //  me.loadCommentFirst(vid);
+    },
+    getPgcUserInfo: function(uid) {
+        var me = this;
+        fetch.fetch({
+            url: 'https://api.tv.sohu.com/v4/user/info/' + uid + '.json?api_key=f351515304020cad28c92f70f002261c',
+            method: 'GET',
+            success: function (res) {
+                res=JSON.parse(res.data);
+                me.userInfo= res.data;
+            },
+            fail: function () {
+                prompt.showToast({
+                    message: '获取出品人失败！'
+                });
+            }
+        });
+    },
+    getRecomList: function(albumld) {
+        var me = this;
+        fetch.fetch({
+            url:common.api_uri+'/v4/search/recommend.json?site=2&vid='+me.vid+'&aid='+albumld+'&plat=17&api_key=f351515304020cad28c92f70f002261c&sver=6.2&partner=78&poid=1',
+            success: function (res) {
+              var res=JSON.parse(res.data);
+              var vList = res.data.videos;
+                _.each(vList, function(item) {
+                    item.playCount = common.shortFixedCount(item.play_count);
+                });
+                me.recomAll= vList;
+                me.recom= vList.slice(0, 4);
+            },
+            fail: function (res) {
+                prompt.showToast({
+                    message: '获取推荐视频失败！'
+                });
+            }
+        });
+    },
+    getAlbumList: function(albumId) {
+        var me = this;
+        me.loadAlbumList(albumId, null, me.vid, function(res) {
+            var ls = res.videos, scrollLeft = 0, albumIndex = 0;
+            _.each(ls, function(item, idx){
+                if (item.vid == me.vid) {
+                    albumIndex = idx;
+                    scrollLeft = idx * (me.albumItemWidth + me.albumItemMargin) + me.albumItemWidth/2 - me.albumListWidth/2;
+                    if (idx == ls.length - 1) {
+                        scrollLeft -= ((me.albumListWidth - me.albumItemWidth) / 2);
+                    }
+                    scrollLeft = scrollLeft>0?scrollLeft:0;
+                    scrollLeft += (res.page==1?0:me.albumLoadingGap);
+                }
+            });
+                me.albumIndex= albumIndex;
+                me.albumList= ls;
+                me.minAlbumPage= res.page;
+                me.maxAlbumPage= res.page;
+                me.albumFirstPage= res.page;
+                me.albumItemCount= res.count;
+                me.albumPageCount= Math.ceil(res.count/me.albumPageSize);
+            setTimeout(function () {
+                var left = albumIndex==0?0:(albumIndex*(me.albumItemWidth+me.albumItemMargin));
+                left += (res.page==1?0:me.albumLoadingGap);
+                me.albumScrollLeft = scrollLeft;
+            }, 20);
+            setTimeout(function(){
+                me.goIndex('cprList',albumIndex);
+            },1000)
+        });
+    },
+    loadCommentFirst: function(vid) {
+        var that = this;
+        fetch.fetch({
+            url: 'https://m.tv.sohu.com/changyan/api/2/topic/load?wx=notuse&client_id=cyqyBluaj&topic_url=http://m.tv.sohu.com/u/vw/'+vid+'.shtml&topic_source_id=bk'+vid+'&page_size=0&hot_size=0',
+            success: function (res) {
+            var res=JSON.parse(res.data);
+                    that.comment =res;
+                setTimeout(function(){
+                    that.getCommentList();
+                }, 20);
+            },
+            fail: function () {
+                 prompt.showToast({
+                     message: '获取评论失败！'
+                 });
+            }
+        });
+    },
+    getCommentList: function() {
+        var c = this.comment;
+        if ((c.cmt_sum != undefined && c.comments.length >= c.cmt_sum) || this.commentFrozen) return;
+        var that = this;
+            that.commentFrozen= true;
+        fetch.fetch({
+            url: 'https://m.tv.sohu.com/changyan/api/2/topic/comments?wx=notuse&client_id=cyqyBluaj&topic_id='+c.topic_id+'&order_by=time&page_size=30&page_no='+that.comment_page_no,
+            success: function (res) {
+                var rs = JSON.parse(res.data);
+                if (rs.comments) {
+                    _.each(rs.comments, function(item) {
+                        item.publishDate = common.formatDateStr(new Date(item.create_time), 'yyyy-MM-dd');
+                        item.commentsR = item.comments.reverse();
+                        item.content = WxParse.strDiscode(item.content);
+                        _.each(item.commentsR, function(innerItem) {
+                            innerItem.content = WxParse.strDiscode(innerItem.content);
+                        });
+                    });
+                }
+                var currComment = that.comment;
+                var comments = currComment.comments||[];
+                currComment.comments = comments.concat(rs.comments);
+                that.comment= currComment;
+                that.comment_page_no= that.comment_page_no+1;
+                setTimeout(function(){
+                    that.commentFrozen= false;
+                }, 500);
+
+            },
+            fail: function () {
+                // prompt.showToast({
+                //     message: '获取评论失败！'
+                // });
+            }
+        });
+    },
+    albumLoadFirst: function() {
+        var that = this, lowPage = this.minAlbumPage;
+        if (lowPage > 1) {
+            that.loadingAlbumList= true;
+            that.loadAlbumList(that.aid, lowPage-1, that.vid, function(res) {
+                var currList = that.albumList, ls = res.videos, scrollLeft = 0;
+                that.loadingAlbumList= false;
+                that.albumList= ls.concat(currList);
+                that.minAlbumPage= lowPage-1;
+            });
+        }
+    },
+    albumLoadLast: function() {
+        var that = this, upPage = this.maxAlbumPage;
+        if (upPage > 0 && upPage < this.albumPageCount) {
+            that.loadAlbumList(that.aid, upPage+1, that.vid, function(res) {
+            var currList = that.albumList, ls = res.videos, scrollLeft = 0;
+                that.loadingAlbumList= false;
+               that.albumList=currList.concat(ls);
+                that.minAlbumPage=upPage+1;
+            });
+        }
+    },
+    loadAlbumList: function(albumId, page, vid, callback) {
+        if (this.frozen) return;
+        this.frozen= true;
+        var that = this;
+        var url=common.api_uri + '/v4/album/videos/' + albumId + '.json?page_size='+that.albumPageSize+'&with_trailer=1&with_fee_video=3&prevideo_rule=2&order=1&vid='+vid+'&plat=17&api_key=f351515304020cad28c92f70f002261c&sver=6.2&partner=78&poid=1'
+        if(page&&page>1){
+          url=common.api_uri + '/v4/album/videos/' + albumId + '.json?page_size='+that.albumPageSize+'&page='+(page==null?1:page)+
+          '&with_trailer=1&with_fee_video=3&prevideo_rule=2&order=1&plat=17&api_key=f351515304020cad28c92f70f002261c&sver=6.2&partner=78&poid=1'
+        }
+        fetch.fetch({
+            url: url,
+            success: function (res) {
+              var res=JSON.parse(res.data);
+                var vList = res.data.videos;
+                _.each(vList, function(item) {
+                    item.playCount = common.shortFixedCount(item.play_count);
+                    item.publishDate = common.formatDateStr(new Date(item.create_date), 'yyyy-MM-dd');
+                });
+                callback && callback(res.data);
+                setTimeout(function(){
+                    that.frozen= false;
+                }, 500);
+            },
+            fail: function (res) {
+                prompt.showToast({
+                    message: '获取出品人剧集！'
+                });
+            }
+        });
+    },
+
+    toggleAlbumShow: function(e) {
+        var that = this;
+        that.albumShown= !this.albumShown;
+        if (this.albumShown) {
+            var scrollTop = that.albumIndex * (that.popupAlbumItemHeight+that.popupAlbumItemGap) + that.popupAlbumItemGap - (that.pageHeight-that.popupTitleHeight)/2;
+            scrollTop = scrollTop>0?scrollTop:0;
+            setTimeout(function () {
+                that.albumScrollTop =scrollTop+(that.albumFirstPage==1?0:that.albumLoadingGap);
+            }, 20);
+        }
+    },
+    onShow: function () {
+        var me = this;
+        if (me.isWIFI) {
+            network.subscribe({
+                success: function (res) {
+                    var networkType =JSON.stringify(res).type; // 返回网络类型2g，3g，4g，wifi
+                    if (networkType !== 'wifi') {
+                    me.isWIFI=false;
+                        setTimeout(function () {
+                        me.isWIFI=true;
+                        }, 3000)
+                    } else {
+                        if (me.videoLoaded) {
+                            me.videoContext.start();
+                        }
+                    }
+                }
+            });
+        }
+    },
+    onHide: function () {
+        var ct = this.$element('player');
+        this.videoContext&&this.videoContext.pause()
+    },
+    onUnload: function () {
+        //修复分享链接安卓video播放暂停
+        var ct = this.$element('player');
+        this.videoContext&&this.videoContext.pause()
+    },
+    getPlayInfo: function (vid, callback) {
+        var me = this;
+        var video = {};
+        var url = 'https://api.tv.sohu.com/phone_playinfo?vid=' + vid + '&site=2&encoding=utf-8&plat=17&partner=78&api_key=f351515304020cad28c92f70f002261c&sver=6.2&poid=1';
+
+        //视频信息
+        fetch.fetch({
+            url: url,
+            data: {},
+            dataType: 'json',
+            method: 'GET',
+            header: {
+                'content-type': 'application/json'
+            },
+            success: function (res) {
+            var res=JSON.parse(res.data)
+              var video = res&&res.data;
+                //标签
+                video.keyword = video.keyword.trim() ? video.keyword.split(" ") : [];
+
+                //播放量
+                video.play_count = common.shortFixedCount(video.play_count);
+                    me.video= video;
+                if (!me.aid || me.aid == '0') {
+                    me.aid= video.aid;
+                    me.getAlbumList(video.aid);
+                    me.getRecomList(video.aid);
+                }
+
+                var isArray = function(obj) {
+                    return Object.prototype.toString.call(obj) === '[object Array]';
+                };
+
+                var urls = video.urls || {};
+                var videosrc = '';
+                var formatUrl = function (url) {
+
+                    url = url || '';
+                    if(isArray(url)){
+                        url = url[0];
+                    }
+                    url = url.replace('http://', 'https://');// mp4
+                    return url;
+                };
+
+                for (var i in urls) {
+                    if (urls.hasOwnProperty(i)) {
+                        //i=m3u8 | mp4
+                        if (i === 'downloadUrl') {
+                            if (urls[i][0] && urls[i][0] !== '') {
+                                urls[i][0] = formatUrl(urls[i][0]);
+                            }
+                        }
+                        else {
+                            for (var j in urls[i]) {
+                                if (urls[i].hasOwnProperty(j)) {
+                                    //j= nor|hig| sup
+                                    _.each(urls[i][j], function (src, idx) {
+                                        src = formatUrl(src);
+                                        urls[i][j][idx] = src;
+                                    }, me);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //优先m3u8
+                if (useM3u8 && !!urls['m3u8']) {
+                    videosrc = urls['m3u8']['nor'][0] || urls['m3u8']['hig'][0] || urls['m3u8']['sup'][0];
+                }
+                else {
+                    videosrc = urls['downloadUrl'][0] || urls['mp4']['hig'][0] || '';
+                }
+
+                video.urls = urls;
+                //test
+                console.info(" useM3u8****:" + useM3u8 + " videosrc====> " + videosrc);
+                      clipboard.set({
+                        text: videosrc
+                      })
+                    me.video= video;
+                    me.videoLoaded= true;
+                    me.duration= video.duration;
+                    me.videosrc= videosrc;
+                    me.videotitle= encodeURIComponent(video.video_name || '');
+                    me.poster= video.video_big_pic || video.hor_w8_pic || '';
+                if (video && video.user_id && (!me.uid || me.uid == '0')) {
+                        me.uid= video.user_id;
+                //    me.getPgcUserInfo(video.user_id);
+                }
+
+                setTimeout(function(){
+                    me.hidePopup= false;
+                }, 500);
+
+                callback && callback();
+            },
+            fail: function (res) {
+                prompt.showToast({
+              //    message: '获取视频失败'
+                });
+                callback && callback();
+            }
+        });
+
+    },
+    playstart: function (evt) {
+        var me = this;
+
+    },
+    playpause: function (evt) {
+        var me = this;
+    },
+    playended: function (evt) {
+        var d = this;
+        console.log('playended');
+        if (d.albumList && d.albumList.length > 1 && d.albumIndex < d.albumList.length-1) {
+            var item =  d.albumList[d.albumIndex+1];
+            router.push({
+             uri:'Play',
+              params: {
+              site:item.site
+              ,user_id:d.uid
+              ,vid:item.vid
+              ,aid:item.aid
+              }
+            })
+        }
+    },
+    toggleBlock(cname) {
+      if(cname){
+        this[cname]=!this[cname];
+      }else{
+        this.showDesc=!this.showDesc;
+        this.showDescVisible=!this.showDescVisible;
+      }
     },
     refreshUrl:function(options){
-    this.showFocus=false;
-      var self =this;
-      var channel_type = options.channel_type;
-      var channel_id = options.channel_id;
-      self.currentChannelId = channel_id;
-      self.options={
-      channel_type:channel_type,
-      channel_id:channel_id
+      var me = this;
+      var uid = options.user_id;
+      var vid = options.vid;
+      var aid = options.aid;
+        me.uid=uid;
+        me.vid=vid;
+        me.aid=aid;
+      me.getPlayInfo(vid);
+      //出品人信息
+      if (uid && Number(uid) > 0) {
+          me.getPgcUserInfo(uid);
       }
-      self.queryData= self.options;
-      console.log("currnt ---> " +channel_id);
-      //==========init model==============
-    //video List子栏目频道数据
-    this.chlVideoList = fetch.fetch({
-        url:common.api_uri + '/v4/mobile/video/list.json',
-        params:{
-            'column_id' :   self.options['column_id']   || '607',
-            'column_type': self.options['column_type']  || 18 ,
-            'page_size':  8
-        }
-    });
-    this.chlList();
-    this.chlData();
+      //剧集信息
+      //推荐视频
+      if (aid && Number(aid) > 0) {
+          me.getAlbumList(aid);
+          me.getRecomList(aid);
+      }
+      //评论
+      me.loadCommentFirst(vid);
     },
     routePush: function (path,params) {
-    if(path==='Index'){
-      this.refreshUrl(params)
-      return false;
-    }
+  //  this.refreshUrl(params)
       router.push({
        uri:path,
         params: params
       })
-    },
-    lower: function(evt) {
-        //滚动到底部/右边
-    },
-    scroll: function(evt) {
-        try {
-            wx.setStorageSync('scrollLeftPos', evt.detail.scrollLeft||0);
-        } catch (e) {
-            console.log(e);
-        }
-    },
-
-    buildTopNav : function(chlList,curId){
-        var self =this;
-        var tags=[];
-        var chlList = chlList || [];
-        var filter=[71270000,71200000];
-        var pos=1;
-        for(var i = 0; i < chlList.length; i++) {
-            var chlInfo = chlList[i];
-            var channel_id = chlInfo["channel_id"] || self.currentChannelId;
-            chlInfo.active="";
-            if(curId == channel_id ){
-              self.$page.setTitleBar({text: '搜狐视频—'+chlInfo.name+'专栏'})
-                chlInfo.active="current";
-                self.toView=curId;
-                pos=i;
-                self.scrollLeft= pos*100;
-                setTimeout(function(){
-                  self.goIndex('tabList',pos);
-                },200)
-            }
-            if( filter.indexOf(channel_id) < 0 ) {
-                tags.push(chlInfo);
-            }
-
-        }
-        return tags;
-    },
-    buildColumns:function (pgc_data) {
-        var self =this;
-        var columns = pgc_data.columns || [];
-        var titles = ['main_title', 'bottom_title', 'sub_title', 'corner_title'];
-        for (var col = 0, cnt = columns.length; col < cnt; col++) {
-            try{
-                var rs = columns[col] || {};
-                var column_id = rs['column_id'] || 0;
-                var column_type = rs['column_type'] || 0;
-                var template = rs['template'] || null;
-                var template_id = parseInt(rs['template']['template_id'] || -1);
-                var load_more = rs['load_more'] || 0;
-                var data_list = rs['data_list'] || [];
-                var action_list =[];
-                rs.zh_name=encodeURIComponent(rs.name);
-                var focus_img=[];
-                //重写更多
-                var action_url='/sohutv/channel/channel?column_id='+column_id+'&column_type='+column_type+'&column_name='+rs.zh_name;
-                action_list=[{action_url:action_url, tip: "更多",column_id:column_id,column_type:column_type,column_name:rs.zh_name}];
-                rs['action_list']= action_list;
-
-                //format data_list
-                if(data_list && data_list.length>0) {
-                    for (var i = 0; i < data_list.length; i++) {
-                        //format data
-                        var obj = data_list[i];
-                        obj['play_count'] = obj.play_count || 0; //播放数
-                        if (template != null) {
-                            _.each(titles, function (title) {
-                                if (template[title]) {
-                                    obj[title] = obj[template[title]] || '';
-                                    obj[title + '_filtered'] = common.filterXSS(obj[title]);
-                                }
-                            }, self);
-                        }
-                        obj['url_img'] = obj["hor_common_pic"] || obj["hor_high_pic"] || obj["hor_w6_pic"] || obj["hor_w8_pic"] || video_blank_img;
-                        obj['wx_play_url'] = common.makeWxPlayUrl(obj);                                                   //小程序播放url
-                        obj['play_url'] = common.makePlayUrl(obj);                                                        //h5播放url
-                        obj['show_play_count_bottom_title'] = (template.bottom_title == "play_count" && obj.play_count > 0); //是否在底部标题位置显示播放数
-                        obj['show_play_count_sub_title'] = (template.sub_title == "play_count" && obj.play_count > 0);    //是否在子标题位置显示播放数
-                        obj['play_count_short'] = common.shortFixedCount(obj.play_count);
-                        obj['show_play_count_bottom_title']=false;
-                        obj['show_play_count_sub_title']=false;
-                        obj['bottom_title'] =  obj['nickname']||'';
-                        obj['bottom_title_filtered'] = common.filterXSS(obj['bottom_title']);
-
-                        if(template_id==2 && obj.vid){
-                            //焦点图
-                            var focus_src = obj["video_big_pic"]||obj["hor_common_pic"] || obj["hor_high_pic"] || obj["hor_w8_pic"]||'';
-                            var pic={
-                                pic:focus_src,
-                                vid:obj.vid||'',
-                                site:obj.site||2,
-                                main_title:obj['main_title']||'',
-                                aid:obj.aid||obj.sid||0,
-                                user_id:obj.user_id||'',
-                                link:obj['wx_play_url']
-                            };
-                            if(focus_src) {
-                                focus_img.push(pic);
-                            }
-                        }
-
-                        if (obj.vid) {
-                            data_list[i] = obj;
-                        }
-                    }
-
-
-                }
-                if(rs.column_id) {
-                    columns[col] = rs;
-                }
-                if(template_id==2 && focus_img.length>0){
-                self.showFocus=true;
-                self.imgUrls= focus_img;
-                    columns[col]={};//清空focus节点
-                    console.log('focus_img==>',focus_img);
-                }
-            }catch (e){
-
-            }
-
-        }
-        return columns;
-    },
-    buildMore : function(data,req_params){
-        var self = this;
-        var result={};
-        req_params=req_params||{};
-        var column_id =""+req_params.column_id;
-        result.req_params=_.extend({},req_params,{
-            offset:data.cursor||data.count||0,
-        });
-        result['column_id'] = column_id;
-        var videos = data.videos||[]; //new data
-        var columns = self.data.columnList||[];
-        var orgin_videos = [];
-        var orgin_pos=-1;
-        var orgin_column_id=0;
-        for (var col = 0, cnt = columns.length; col < cnt; col++) {
-            var rs = columns[col] || {};
-            orgin_column_id = rs['column_id'] || 0;
-            if(orgin_column_id==column_id){
-                orgin_pos = col;
-                orgin_videos = rs['data_list']||[];
-                break;
-            }
-        }
-        for(var i = 0; i < videos.length; i++) {
-            var obj = videos[i];
-            obj.vid=obj.vid||'';
-            obj['play_count'] = obj.play_count || 0; //播放数
-            obj['url_img'] = obj["hor_common_pic"] || obj["hor_high_pic"] || obj["hor_w6_pic"] || obj["hor_w8_pic"] || video_blank_img;
-            obj['wx_play_url'] = common.makeWxPlayUrl(obj);                                                   //小程序播放url
-            obj['play_url'] = common.makePlayUrl(obj);
-            obj['play_count_short'] = common.shortFixedCount(obj.play_count);
-            obj['show_play_count_bottom_title']=false;
-            obj['show_play_count_sub_title']=false;
-            obj['bottom_title'] =  obj['nickname']||'';
-            obj['main_title'] =  obj['other_video_name']||obj['video_name']||'';
-            obj['bottom_title_filtered'] = common.filterXSS(obj['bottom_title']);
-            obj['main_title_filtered'] = common.filterXSS(obj['main_title']);
-            if (obj.vid) {
-                videos[i] = obj;
-            }
-        }
-        if(videos.length>0 && orgin_pos>=0){
-            columns[orgin_pos]['data_list'] = orgin_videos.concat(videos);
-            hashMore[column_id] = result;
-            self.columnList= columns;
-        }
-        return videos;
-    },
-    changeIndicatorDots: function (e) {
-    this.indicatorDots= !this.data.indicatorDots;
-    },
-    changeVertical: function (e) {
-    this.vertical= !this.data.vertical;
-    },
-    changeAutoplay: function (e) {
-    this.autoplay= !this.data.autoplay;
-    },
-    intervalChange: function (e) {
-    this.interval= e.detail.value;
-    },
-    durationChange: function (e) {
-    this.duration=  e.detail.value;
-    },
-    loadMoreView:function (evt) {
-        var self = this;
-        var target  =evt.currentTarget || evt.target;
-        var dataset = target.dataset||{};
-        var column_id=""+dataset['cid'];
-        var req_params = hashMore[column_id] && hashMore[column_id]['req_params']||{};
-        var offset     = req_params['offset']||8;
-        self.chlVideoList.fetch({
-            url:common.api_uri + '/v4/mobile/video/list.json',
-            params:{
-                'column_id' :   dataset['cid']   || '607',
-                'column_type': dataset['column_type']  || 18 ,
-                'offset': offset||8,
-                'page_size':  8
-            },
-            callback:function (rst) {
-                self.buildMore((rst.data||{}),self.chlVideoList.req_params);
-            }
-        });
-    },
-    openPlayView:function (evt) {
-        console.log(evt);
-    },
-    onShareAppMessage: function () {
-        return {
-            title: '搜狐视频',
-            desc: '更多精彩视频,尽在搜狐视频!'
-        }
-    }
-    }
-
+  }
+}
 </script>

@@ -1,4 +1,4 @@
-/* @import '../Common/playList.css'; */
+@import '../Common/playList.css';
 .section{
     margin-bottom: 0;
     background-color:#ffffff;
@@ -12,15 +12,11 @@
   width: 217px;
   height: 41px;
   margin-left: 10px;
-  align-items:center;
 }
 .ui-navbar{
   flex-direction: row;
-  width: 636px;
   height: 100px;
   align-items:center;
-  justify-content: space-between;
-  flex:1;
 }
 
 .scroll-view_H{
@@ -58,26 +54,11 @@
      font-size:34px;
      color:#1a1a1a;
  }
-.v-cover-container .v-mask{
-  width: 100%;
-  height: 422px;
-  top: 0;
-  left: 0;
-  background-color: rgba(0,0,0,0.2);
-}
-.v-cover-container .v-info{
-  font-size: 24px;
-  color : #ffffff;
-  bottom : 54px;
-  right: 25px;
-}
 .v-opt-container{
   width: 100%;
-  /* padding: 22px 0 32px 0; */
   font-size: 24px;
   display: flex;
 }
-
 .v-opt-container .v-user{
   margin-left: 24px;
   padding: 22px 0 32px;
@@ -85,9 +66,7 @@
 .v-opt-container .v-user .v-user-avatar{
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  background-size: cover;
-  background-repeat: no-repeat;
+  border-radius: 20px;
   align-items:center;
 }
 .v-opt-container .v-user .v-user-name{
@@ -114,17 +93,4 @@
   color: #545454;
   align-items:center;
   line-height: 40px;
-}
-.v-opt-container .share-wxfriend{
-  height: 40px;
-}
-.play-v-name{
-  width: 702px;
-  font-size: 36px;
-  color: #ffffff;
-  top: 22px;
-  left: 24px;
-}
-.link-to-playpage{
-  height: 90px;
 }

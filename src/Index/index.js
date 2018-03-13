@@ -1,6 +1,7 @@
 import common from '../Common/common.js'
 import Futil from '../util.js'
-// import playInfo from '../Common/playinfo.js'
+import playInfo from '../Common/playInfo.js'
+import prompt from '@system.prompt'
 import fetch from '@system.fetch'
 import router from '@system.router'
 import network from '@system.network'
@@ -19,9 +20,11 @@ module.exports = {
         currPlayIndex : '',
         likeList : {},
         page : -1,
+        showshow:false,
         currPlayedVideo:{},
         loadingMore:false,
         isWIFI : false,
+        videoContext:undefined,
         currPlayUrl : '',
         options:{}
     },
@@ -35,12 +38,19 @@ module.exports = {
         network.getType({
           success: (ret) => {
             var networkType = ret
+            console.log(JSON.stringify(networkType))
               if (networkType['type'] !== 'wifi') {
-                self.isWIFI=false;
+                  self.isWIFI=false;
                   setTimeout(function () {
                   self.isWIFI=true;
                   }, 3000)
-              }
+              }else{
+                  self.isWIFI=true;
+                    //WiFi自动播放
+                    setTimeout(function () {
+                    self.videoContext && self.videoContext.start()
+                    }, 1000);
+                }
           }
       });
         console.log("currnt ---> " +channel_id);
@@ -77,9 +87,7 @@ module.exports = {
       fetch.fetch({
         url: common.api_uri + '/channel/' + self.options.channel_id +'/'+ gData.uid +'/rc/v1?passport='+gData.passport+'&flat=6&isH5=1',
           callback:function (rst) {
-            console.log(common.api_uri + '/channel/' + self.options.channel_id +'/'+ gData.uid +'/rc/v1?passport='+gData.passport+'&flat=6&isH5=1')
               var rst=JSON.parse(rst.data);
-              console.log(JSON.stringify(rst))
               if(rst && rst.data && rst.data.columns){
                 var playList = [];
                 var orgList = self.playList;
@@ -87,9 +95,11 @@ module.exports = {
                 self.buildColumns(rst.data.columns, function(playList){
                   playList = orgList.concat(playList);
                   page++;
-                  self.setData({'loadingMore':false ,'playList': playList, 'page': page});
+                  self.loadingMore=false;
+                  self.playList=playList;
+                  self.page=page;
                   if (page == 0 && self.isWIFI){
-                    self.playVideo(playList[0].vid, playList[0].site,0);
+                    // self.playVideo(playList[0].vid, playList[0].site,0);
                   }
                 });
               }
@@ -185,11 +195,11 @@ module.exports = {
                   obj['play_url'] = common.makePlayUrl(obj);
                   obj['play_count_short'] = common.shortFixedCount(obj.play_count);
                   //小程序播放url
-                  obj['wx_play_url'] = common.makeWxPlayUrl(obj);
                   vids.push(obj.vid);
                   if (obj.vid) {
                       playList.push(obj);
                   }
+                  callback&&callback(playList);
                 }
             }catch (e){
             }
@@ -209,41 +219,44 @@ module.exports = {
     },
     playVideo:function(vid,site,index){
       var url = '',me = this;
-      var i=0,playList = this.playList;
+      var i=0,playList = me.playList;
       if(playList[index].playUrl == undefined){
-        // playInfo.getPlayInfo(vid, site, function (rst) {
-        //   url = rst;
-        //   playList[index].playUrl = url;
-        //   self.playList = playList;
-        //   self.currPlayIndex = index;
-        //   self.currPlayUrl = url;
-        //   if (me.videoContext === undefined) {
-        //     me.videoContext =  me.$element('player');
-        //   }
-        // }, function () {
-        //   prompt.showToast({
-        //     title: '提示',
-        //     message: '该视频无法播放',
-        //   })
-        // });
+        playInfo.getPlayInfo(vid, site, function (rst) {
+          playList[index].playUrl = rst;
+          // me.$set(me.currPlayIndex, index);
+          me.playList = playList;
+          me.currPlayIndex = index;
+          me.currPlayUrl = rst;
+          // if (me.videoContext === undefined) {
+            // me.videoContext =  me.$element('player');
+          // }
+        }, function () {
+          prompt.showToast({
+            title: '提示',
+            message: '该视频无法播放',
+          })
+        });
       }else{
-        self.playList = playList;
-        self.currPlayIndex = index;
-        self.currPlayUrl = playList[index].playUrl;
-        if (me.videoContext === undefined) {
-          me.videoContext =  me.$element('player');
-        }
+        me.playList = playList;
+        me.currPlayIndex = index;
+        me.currPlayUrl = playList[index].playUrl;
+        // if (me.videoContext === undefined) {
+          // me.videoContext =  me.$element('player');
+        // }
       }
     },
-    play: function (event) {
-      var dataset = event.currentTarget.dataset;
+    play: function (dataset) {
       var vid = dataset.vid;
       var site = dataset.site;
       var index = dataset.index;
-      this.videoContext && this.videoContext.pause();
+      this.currPlayIndex = index;
+      console.log('this.currPlayIndex:'+this.currPlayIndex)
+      console.log('video'+this.videoContext)
       this.playVideo(vid, site,index);
     },
     playNext: function(event){
+      console.log('playNext')
+      return false;
       var nextIndex = ++this.currPlayIndex;
       if(nextIndex >= this.playList.length){
         return;
@@ -300,10 +313,27 @@ module.exports = {
       this.routePush('Play',url);
     },
     playError : function(e){
-      console.log(e);
+      console.log('error:'+e);
     },
     openPlayView:function (evt) {
-        console.log(evt);
+        console.log('openPlayView:'+evt);
+    },
+    onShow: function () {
+        var me = this;
+        if (me.isWIFI) {
+            network.subscribe({
+                success: function (res) {
+                    var networkType =JSON.stringify(res).type; // 返回网络类型2g，3g，4g，wifi
+                    if (networkType !== 'wifi') {
+                    me.isWIFI=false;
+                        setTimeout(function () {
+                        me.isWIFI=true;
+                        }, 3000)
+                    } else {
+                    }
+                }
+            });
+        }
     },
     routePush: function (path,params) {
       if(path==='Index'){

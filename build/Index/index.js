@@ -135,104 +135,234 @@
 	      ]
 	    },
 	    {
-	      "type": "div",
+	      "type": "list",
 	      "attr": {
-	        "id": function () {return this.$item.vid}
+	        "scrollpage": function () {return this.scrollpage}
 	      },
-	      "repeat": function () {return this.playList},
-	      "id": function () {return this.$item.vid},
 	      "classList": [
-	        "section",
-	        "play-list"
+	        "section"
 	      ],
+	      "events": {
+	        "scrollbottom": "onReachBottom"
+	      },
 	      "children": [
 	        {
-	          "type": "text",
+	          "type": "list-item",
 	          "attr": {
-	            "value": function () {return this.$idx}
-	          }
-	        },
-	        {
-	          "type": "block",
-	          "attr": {},
-	          "shown": function () {return this.$idx!==this.currPlayIndex},
+	            "type": "listItem",
+	            "id": function () {return this.$item.vid}
+	          },
+	          "id": function () {return this.$item.vid},
+	          "repeat": function () {return this.playList},
+	          "classList": [
+	            "play-list"
+	          ],
 	          "children": [
 	            {
-	              "type": "div",
-	              "attr": {
-	                "id": function () {return this.$item.vid}
-	              },
-	              "classList": [
-	                "player-container"
-	              ],
-	              "id": function () {return this.$item.vid},
+	              "type": "stack",
+	              "attr": {},
 	              "children": [
 	                {
-	                  "type": "div",
+	                  "type": "block",
 	                  "attr": {},
-	                  "classList": [
-	                    "v-cover-container"
-	                  ],
-	                  "events": {
-	                    "click": "play"
-	                  },
+	                  "shown": function () {return this.$idx!==this.currPlayIndex},
 	                  "children": [
 	                    {
-	                      "type": "stack",
-	                      "attr": {},
+	                      "type": "div",
+	                      "attr": {
+	                        "id": function () {return this.$item.vid}
+	                      },
+	                      "classList": [
+	                        "player-container"
+	                      ],
+	                      "id": function () {return this.$item.vid},
 	                      "children": [
-	                        {
-	                          "type": "image",
-	                          "attr": {
-	                            "src": function () {return this.$item.cover}
-	                          },
-	                          "classList": [
-	                            "v-cover"
-	                          ],
-	                          "style": {
-	                            "resizeMode": "contain"
-	                          }
-	                        },
 	                        {
 	                          "type": "div",
 	                          "attr": {},
 	                          "classList": [
-	                            "v-mask"
-	                          ]
-	                        },
-	                        {
-	                          "type": "text",
-	                          "attr": {
-	                            "value": function () {return this.$item.video_name}
+	                            "v-cover-container"
+	                          ],
+	                          "events": {
+	                            "click": function (evt) {this.play({vid:this.$item.vid,site:this.$item.site,index:this.$idx},evt)}
 	                          },
-	                          "classList": [
-	                            "v-title"
-	                          ]
-	                        },
-	                        {
-	                          "type": "image",
-	                          "attr": {
-	                            "src": "../../images/play-ico.png"
-	                          },
-	                          "classList": [
-	                            "v-play-btn",
-	                            "v-btn"
-	                          ]
-	                        },
-	                        {
-	                          "type": "text",
-	                          "attr": {
-	                            "value": function () {return (this.$item.play_count_short) + '播放 | ' + (this.$item.time_length_format)}
-	                          },
-	                          "classList": [
-	                            "v-info"
+	                          "children": [
+	                            {
+	                              "type": "stack",
+	                              "attr": {},
+	                              "children": [
+	                                {
+	                                  "type": "image",
+	                                  "attr": {
+	                                    "src": function () {return this.$item.cover}
+	                                  },
+	                                  "classList": [
+	                                    "v-cover"
+	                                  ],
+	                                  "style": {
+	                                    "resizeMode": "contain"
+	                                  }
+	                                },
+	                                {
+	                                  "type": "div",
+	                                  "attr": {},
+	                                  "classList": [
+	                                    "v-mask"
+	                                  ]
+	                                },
+	                                {
+	                                  "type": "div",
+	                                  "attr": {},
+	                                  "classList": [
+	                                    "v-title"
+	                                  ],
+	                                  "children": [
+	                                    {
+	                                      "type": "text",
+	                                      "attr": {
+	                                        "value": function () {return (this.$item.video_name) + (this.isWIFI)}
+	                                      }
+	                                    }
+	                                  ]
+	                                },
+	                                {
+	                                  "type": "div",
+	                                  "attr": {},
+	                                  "classList": [
+	                                    "v-play-btn"
+	                                  ],
+	                                  "children": [
+	                                    {
+	                                      "type": "image",
+	                                      "attr": {
+	                                        "src": "../Common/images/play-ico.png"
+	                                      },
+	                                      "classList": [
+	                                        "v-btn"
+	                                      ]
+	                                    }
+	                                  ]
+	                                },
+	                                {
+	                                  "type": "div",
+	                                  "attr": {},
+	                                  "classList": [
+	                                    "v-info"
+	                                  ],
+	                                  "children": [
+	                                    {
+	                                      "type": "text",
+	                                      "attr": {
+	                                        "value": function () {return (this.$item.play_count_short) + '播放 | ' + (this.$item.time_length_format)}
+	                                      }
+	                                    }
+	                                  ]
+	                                }
+	                              ]
+	                            }
 	                          ]
 	                        }
 	                      ]
 	                    }
 	                  ]
+	                },
+	                {
+	                  "type": "div",
+	                  "attr": {
+	                    "id": "playerBox"
+	                  },
+	                  "classList": [
+	                    "player"
+	                  ],
+	                  "id": "playerBox",
+	                  "style": {
+	                    "height": "422px"
+	                  },
+	                  "children": [
+	                    {
+	                      "type": "video",
+	                      "attr": {
+	                        "id": "player",
+	                        "src": function () {return this.currPlayUrl},
+	                        "autoplay": function () {return this.isWIFI},
+	                        "controls": "true",
+	                        "poster": "https://photocdn.tv.sohu.com/img/20180302/pic_compress_2d4e7934-f71a-411c-a404-0a1d326f42e5_q_mini.png"
+	                      },
+	                      "id": "player",
+	                      "shown": function () {return this.$idx===this.currPlayIndex&&this.currPlayUrl!==''}
+	                    }
+	                  ]
 	                }
 	              ]
+	            },
+	            {
+	              "type": "div",
+	              "attr": {},
+	              "classList": [
+	                "v-opt-container",
+	                "cf"
+	              ],
+	              "children": [
+	                {
+	                  "type": "div",
+	                  "attr": {},
+	                  "classList": [
+	                    "v-user"
+	                  ],
+	                  "children": [
+	                    {
+	                      "type": "image",
+	                      "attr": {
+	                        "src": function () {return this.$item.header}
+	                      },
+	                      "classList": [
+	                        "v-user-avatar"
+	                      ]
+	                    },
+	                    {
+	                      "type": "text",
+	                      "attr": {
+	                        "value": function () {return this.$item.userName}
+	                      },
+	                      "shown": function () {return this.$item.header!=undefined},
+	                      "classList": [
+	                        "v-user-name"
+	                      ]
+	                    }
+	                  ]
+	                },
+	                {
+	                  "type": "div",
+	                  "attr": {},
+	                  "classList": [
+	                    "like-wrap"
+	                  ]
+	                }
+	              ]
+	            }
+	          ]
+	        },
+	        {
+	          "type": "list-item",
+	          "attr": {
+	            "type": "loadMore"
+	          },
+	          "classList": [
+	            "load-more"
+	          ],
+	          "shown": function () {return this.loadingMore},
+	          "children": [
+	            {
+	              "type": "progress",
+	              "attr": {
+	                "type": "circular"
+	              }
+	            },
+	            {
+	              "type": "text",
+	              "attr": {
+	                "value": "加载更多"
+	              }
 	            }
 	          ]
 	        }
@@ -246,11 +376,11 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-	  ".section": {
-	    "marginBottom": "0px",
+	  ".page": {
+	    "flex": 1,
 	    "backgroundColor": "#ffffff",
-	    "flexDirection": "column",
-	    "flex": 1
+	    "fontSize": "32px",
+	    "flexDirection": "column"
 	  },
 	  ".section_gap": {
 	    "paddingTop": "0px",
@@ -258,19 +388,459 @@
 	    "paddingBottom": "0px",
 	    "paddingLeft": "0px"
 	  },
+	  ".play-list": {
+	    "fontSize": "0px",
+	    "flexDirection": "column",
+	    "flex": 1
+	  },
+	  ".player-container": {
+	    "flexDirection": "column",
+	    "width": "100%",
+	    "fontSize": "0px"
+	  },
+	  ".player": {
+	    "width": "750px",
+	    "height": "422px"
+	  },
+	  ".v-cover-container": {
+	    "width": "100%",
+	    "height": "422px",
+	    "flexGrow": 1,
+	    "flexDirection": "column"
+	  },
+	  ".v-cover-container .v-cover": {
+	    "width": "100%",
+	    "height": "422px",
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-cover-container"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-cover"
+	        }
+	      ]
+	    }
+	  },
+	  ".v-cover-container .v-mask": {
+	    "width": "100%",
+	    "height": "422px",
+	    "backgroundColor": "rgba(0,0,0,0.2)",
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-cover-container"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-mask"
+	        }
+	      ]
+	    }
+	  },
+	  ".v-cover-container .v-title": {
+	    "width": "702px",
+	    "alignItems": "flex-start",
+	    "marginTop": "22px",
+	    "marginLeft": "24px",
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-cover-container"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-title"
+	        }
+	      ]
+	    }
+	  },
+	  ".v-cover-container .v-title text": {
+	    "fontSize": "36px",
+	    "color": "#ffffff",
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-cover-container"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-title"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "t",
+	          "n": "text"
+	        }
+	      ]
+	    }
+	  },
+	  ".v-cover-container .v-play-btn": {
+	    "flexGrow": 1,
+	    "alignItems": "center",
+	    "justifyContent": "center",
+	    "zIndex": 100,
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-cover-container"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-play-btn"
+	        }
+	      ]
+	    }
+	  },
+	  ".v-cover-container .v-play-btn .v-btn": {
+	    "height": "94px",
+	    "width": "76px",
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-cover-container"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-play-btn"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-btn"
+	        }
+	      ]
+	    }
+	  },
+	  ".v-cover-container .v-info": {
+	    "flexDirection": "row",
+	    "width": "100%",
+	    "alignItems": "flex-end",
+	    "justifyContent": "flex-end",
+	    "marginBottom": "24px",
+	    "marginRight": "34px",
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-cover-container"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-info"
+	        }
+	      ]
+	    }
+	  },
+	  ".v-cover-container .v-info text": {
+	    "fontSize": "24px",
+	    "color": "#ffffff",
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-cover-container"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-info"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "t",
+	          "n": "text"
+	        }
+	      ]
+	    }
+	  },
+	  ".v-opt-container .like-wrap": {
+	    "width": "30px",
+	    "height": "30px",
+	    "marginLeft": "29px",
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-opt-container"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "like-wrap"
+	        }
+	      ]
+	    },
+	    "marginTop": "26px",
+	    "lineHeight": "30px"
+	  },
+	  ".v-opt-container .like-wrap .like_num": {
+	    "top": "-5px",
+	    "left": "25px",
+	    "fontSize": "18px",
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-opt-container"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "like-wrap"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "like_num"
+	        }
+	      ]
+	    }
+	  },
+	  ".v-opt-container .liked .like_num": {
+	    "color": "#e63737",
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-opt-container"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "liked"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "like_num"
+	        }
+	      ]
+	    }
+	  },
+	  ".v-opt-container .share-text": {
+	    "color": "#545454",
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-opt-container"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "share-text"
+	        }
+	      ]
+	    },
+	    "alignItems": "center",
+	    "lineHeight": "40px"
+	  },
+	  ".v-opt-container .share-wxfriend": {
+	    "marginTop": "0px",
+	    "marginRight": "0px",
+	    "marginBottom": "0px",
+	    "marginLeft": "37px",
+	    "paddingTop": "0px",
+	    "paddingRight": "0px",
+	    "paddingBottom": "0px",
+	    "paddingLeft": "0px",
+	    "height": "40px",
+	    "width": "40px",
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "v-opt-container"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "share-wxfriend"
+	        }
+	      ]
+	    }
+	  },
+	  ".play-v-name": {
+	    "width": "702px",
+	    "fontSize": "36px",
+	    "color": "#ffffff",
+	    "top": "22px",
+	    "left": "24px"
+	  },
+	  ".laoding-wrap": {
+	    "width": "100%",
+	    "height": "64px",
+	    "textAlign": "center",
+	    "marginTop": "120px",
+	    "marginRight": "0px",
+	    "marginBottom": "120px",
+	    "marginLeft": "0px"
+	  },
+	  ".load-more": {
+	    "width": "100%",
+	    "marginTop": "40px",
+	    "marginRight": "0px",
+	    "marginBottom": "40px",
+	    "marginLeft": "0px",
+	    "height": "44px",
+	    "justifyContent": "center"
+	  },
+	  ".p_hide": {
+	    "display": "none"
+	  },
+	  ".section": {
+	    "marginBottom": "0px",
+	    "backgroundColor": "#ffffff",
+	    "flexDirection": "column",
+	    "flex": 1
+	  },
 	  ".nav-logo": {
 	    "width": "217px",
 	    "height": "41px",
-	    "marginLeft": "10px",
-	    "alignItems": "center"
+	    "marginLeft": "10px"
 	  },
 	  ".ui-navbar": {
 	    "flexDirection": "row",
-	    "width": "636px",
 	    "height": "100px",
-	    "alignItems": "center",
-	    "justifyContent": "space-between",
-	    "flex": 1
+	    "alignItems": "center"
 	  },
 	  ".scroll-view_H": {
 	    "flexWrap": "nowrap",
@@ -306,61 +876,6 @@
 	  ".scroll-view-url": {
 	    "fontSize": "34px",
 	    "color": "#1a1a1a"
-	  },
-	  ".v-cover-container .v-mask": {
-	    "width": "100%",
-	    "height": "422px",
-	    "top": "0px",
-	    "left": "0px",
-	    "backgroundColor": "rgba(0,0,0,0.2)",
-	    "_meta": {
-	      "ruleDef": [
-	        {
-	          "t": "a",
-	          "n": "class",
-	          "i": false,
-	          "a": "element",
-	          "v": "v-cover-container"
-	        },
-	        {
-	          "t": "d"
-	        },
-	        {
-	          "t": "a",
-	          "n": "class",
-	          "i": false,
-	          "a": "element",
-	          "v": "v-mask"
-	        }
-	      ]
-	    }
-	  },
-	  ".v-cover-container .v-info": {
-	    "fontSize": "24px",
-	    "color": "#ffffff",
-	    "bottom": "54px",
-	    "right": "25px",
-	    "_meta": {
-	      "ruleDef": [
-	        {
-	          "t": "a",
-	          "n": "class",
-	          "i": false,
-	          "a": "element",
-	          "v": "v-cover-container"
-	        },
-	        {
-	          "t": "d"
-	        },
-	        {
-	          "t": "a",
-	          "n": "class",
-	          "i": false,
-	          "a": "element",
-	          "v": "v-info"
-	        }
-	      ]
-	    }
 	  },
 	  ".v-opt-container": {
 	    "width": "100%",
@@ -398,9 +913,7 @@
 	  ".v-opt-container .v-user .v-user-avatar": {
 	    "width": "40px",
 	    "height": "40px",
-	    "borderRadius": "50%",
-	    "backgroundSize": "cover",
-	    "backgroundRepeat": "no-repeat",
+	    "borderRadius": "20px",
 	    "alignItems": "center",
 	    "_meta": {
 	      "ruleDef": [
@@ -472,32 +985,6 @@
 	      ]
 	    }
 	  },
-	  ".v-opt-container .like-wrap": {
-	    "height": "30px",
-	    "marginTop": "26px",
-	    "lineHeight": "30px",
-	    "_meta": {
-	      "ruleDef": [
-	        {
-	          "t": "a",
-	          "n": "class",
-	          "i": false,
-	          "a": "element",
-	          "v": "v-opt-container"
-	        },
-	        {
-	          "t": "d"
-	        },
-	        {
-	          "t": "a",
-	          "n": "class",
-	          "i": false,
-	          "a": "element",
-	          "v": "like-wrap"
-	        }
-	      ]
-	    }
-	  },
 	  ".v-opt-container .share-wrap": {
 	    "height": "40px",
 	    "marginRight": "29px",
@@ -550,66 +1037,6 @@
 	        }
 	      ]
 	    }
-	  },
-	  ".v-opt-container .share-text": {
-	    "color": "#545454",
-	    "alignItems": "center",
-	    "lineHeight": "40px",
-	    "_meta": {
-	      "ruleDef": [
-	        {
-	          "t": "a",
-	          "n": "class",
-	          "i": false,
-	          "a": "element",
-	          "v": "v-opt-container"
-	        },
-	        {
-	          "t": "d"
-	        },
-	        {
-	          "t": "a",
-	          "n": "class",
-	          "i": false,
-	          "a": "element",
-	          "v": "share-text"
-	        }
-	      ]
-	    }
-	  },
-	  ".v-opt-container .share-wxfriend": {
-	    "height": "40px",
-	    "_meta": {
-	      "ruleDef": [
-	        {
-	          "t": "a",
-	          "n": "class",
-	          "i": false,
-	          "a": "element",
-	          "v": "v-opt-container"
-	        },
-	        {
-	          "t": "d"
-	        },
-	        {
-	          "t": "a",
-	          "n": "class",
-	          "i": false,
-	          "a": "element",
-	          "v": "share-wxfriend"
-	        }
-	      ]
-	    }
-	  },
-	  ".play-v-name": {
-	    "width": "702px",
-	    "fontSize": "36px",
-	    "color": "#ffffff",
-	    "top": "22px",
-	    "left": "24px"
-	  },
-	  ".link-to-playpage": {
-	    "height": "90px"
 	  }
 	}
 
@@ -627,17 +1054,25 @@
 	
 	var _util2 = _interopRequireDefault(_util);
 	
-	var _system = $app_require$('@app-module/system.fetch');
+	var _playInfo = __webpack_require__(7);
+	
+	var _playInfo2 = _interopRequireDefault(_playInfo);
+	
+	var _system = $app_require$('@app-module/system.prompt');
 	
 	var _system2 = _interopRequireDefault(_system);
 	
-	var _system3 = $app_require$('@app-module/system.router');
+	var _system3 = $app_require$('@app-module/system.fetch');
 	
 	var _system4 = _interopRequireDefault(_system3);
 	
-	var _system5 = $app_require$('@app-module/system.network');
+	var _system5 = $app_require$('@app-module/system.router');
 	
 	var _system6 = _interopRequireDefault(_system5);
+	
+	var _system7 = $app_require$('@app-module/system.network');
+	
+	var _system8 = _interopRequireDefault(_system7);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -656,9 +1091,11 @@
 	    currPlayIndex: '',
 	    likeList: {},
 	    page: -1,
+	    showshow: false,
 	    currPlayedVideo: {},
 	    loadingMore: false,
 	    isWIFI: false,
+	    videoContext: undefined,
 	    currPlayUrl: '',
 	    options: {}
 	  }},
@@ -669,14 +1106,21 @@
 	      channel_id: channel_id
 	    };
 	    self.queryData = self.options;
-	    _system6.default.getType({
+	    _system8.default.getType({
 	      success: function success(ret) {
 	        var networkType = ret;
+	        console.log(JSON.stringify(networkType));
 	        if (networkType['type'] !== 'wifi') {
 	          self.isWIFI = false;
 	          setTimeout(function () {
 	            self.isWIFI = true;
 	          }, 3000);
+	        } else {
+	          self.isWIFI = true;
+	
+	          setTimeout(function () {
+	            self.videoContext && self.videoContext.start();
+	          }, 1000);
 	        }
 	      }
 	    });
@@ -690,7 +1134,7 @@
 	
 	  chlList: function chlList() {
 	    var self = this;
-	    _system2.default.fetch({
+	    _system4.default.fetch({
 	      url: _common2.default.api_uri + '/channel/' + gData.uid + '/list?passport=' + self.passport,
 	      success: function success(rst) {
 	        var rst = JSON.parse(rst.data);
@@ -701,7 +1145,7 @@
 	        }
 	      },
 	      fail: function fail() {
-	        prompt.showToast({
+	        _system2.default.showToast({
 	          message: '失败'
 	        });
 	      }
@@ -710,12 +1154,10 @@
 	
 	  chlData: function chlData() {
 	    var self = this;
-	    _system2.default.fetch({
+	    _system4.default.fetch({
 	      url: _common2.default.api_uri + '/channel/' + self.options.channel_id + '/' + gData.uid + '/rc/v1?passport=' + gData.passport + '&flat=6&isH5=1',
 	      callback: function callback(rst) {
-	        console.log(_common2.default.api_uri + '/channel/' + self.options.channel_id + '/' + gData.uid + '/rc/v1?passport=' + gData.passport + '&flat=6&isH5=1');
 	        var rst = JSON.parse(rst.data);
-	        console.log(JSON.stringify(rst));
 	        if (rst && rst.data && rst.data.columns) {
 	          var playList = [];
 	          var orgList = self.playList;
@@ -723,10 +1165,10 @@
 	          self.buildColumns(rst.data.columns, function (playList) {
 	            playList = orgList.concat(playList);
 	            page++;
-	            self.setData({ 'loadingMore': false, 'playList': playList, 'page': page });
-	            if (page == 0 && self.isWIFI) {
-	              self.playVideo(playList[0].vid, playList[0].site, 0);
-	            }
+	            self.loadingMore = false;
+	            self.playList = playList;
+	            self.page = page;
+	            if (page == 0 && self.isWIFI) {}
 	          });
 	        }
 	      }
@@ -779,7 +1221,7 @@
 	    return tags;
 	  },
 	  getVideoLikeNum: function getVideoLikeNum(vids, callback) {
-	    _system2.default.fetch({
+	    _system4.default.fetch({
 	      url: 'https://score.my.tv.sohu.com/digg/get/v2.do?callback=?vids=' + vids.join(',') + 'type=9001&isH5=1',
 	      dataType: 'json',
 	      method: 'GET',
@@ -818,11 +1260,11 @@
 	          obj['play_url'] = _common2.default.makePlayUrl(obj);
 	          obj['play_count_short'] = _common2.default.shortFixedCount(obj.play_count);
 	
-	          obj['wx_play_url'] = _common2.default.makeWxPlayUrl(obj);
 	          vids.push(obj.vid);
 	          if (obj.vid) {
 	            playList.push(obj);
 	          }
+	          callback && callback(playList);
 	        }
 	      } catch (e) {}
 	    }
@@ -845,25 +1287,38 @@
 	    var url = '',
 	        me = this;
 	    var i = 0,
-	        playList = this.playList;
-	    if (playList[index].playUrl == undefined) {} else {
-	      self.playList = playList;
-	      self.currPlayIndex = index;
-	      self.currPlayUrl = playList[index].playUrl;
-	      if (me.videoContext === undefined) {
-	        me.videoContext = me.$element('player');
-	      }
+	        playList = me.playList;
+	    if (playList[index].playUrl == undefined) {
+	      _playInfo2.default.getPlayInfo(vid, site, function (rst) {
+	        playList[index].playUrl = rst;
+	
+	        me.playList = playList;
+	        me.currPlayIndex = index;
+	        me.currPlayUrl = rst;
+	      }, function () {
+	        _system2.default.showToast({
+	          title: '提示',
+	          message: '该视频无法播放'
+	        });
+	      });
+	    } else {
+	      me.playList = playList;
+	      me.currPlayIndex = index;
+	      me.currPlayUrl = playList[index].playUrl;
 	    }
 	  },
-	  play: function play(event) {
-	    var dataset = event.currentTarget.dataset;
+	  play: function play(dataset) {
 	    var vid = dataset.vid;
 	    var site = dataset.site;
 	    var index = dataset.index;
-	    this.videoContext && this.videoContext.pause();
+	    this.currPlayIndex = index;
+	    console.log('this.currPlayIndex:' + this.currPlayIndex);
+	    console.log('video' + this.videoContext);
 	    this.playVideo(vid, site, index);
 	  },
 	  playNext: function playNext(event) {
+	    console.log('playNext');
+	    return false;
 	    var nextIndex = ++this.currPlayIndex;
 	    if (nextIndex >= this.playList.length) {
 	      return;
@@ -884,7 +1339,7 @@
 	    var _isLike = _likeList[vid].isLiked || 'false';
 	    var isUp = _isLike && _isLike === 'true' ? false : true;
 	    if (isUp === true) {
-	      _system2.default.fetch({
+	      _system4.default.fetch({
 	        url: 'https://score.my.tv.sohu.com/digg/up/v2.do?callback=?vid=' + vid + '&type=9001&from=&isUp=56-weixin' + isUp,
 	        dataType: 'json',
 	        method: 'GET',
@@ -920,17 +1375,33 @@
 	    this.routePush('Play', url);
 	  },
 	  playError: function playError(e) {
-	    console.log(e);
+	    console.log('error:' + e);
 	  },
 	  openPlayView: function openPlayView(evt) {
-	    console.log(evt);
+	    console.log('openPlayView:' + evt);
+	  },
+	  onShow: function onShow() {
+	    var me = this;
+	    if (me.isWIFI) {
+	      _system8.default.subscribe({
+	        success: function success(res) {
+	          var networkType = JSON.stringify(res).type;
+	          if (networkType !== 'wifi') {
+	            me.isWIFI = false;
+	            setTimeout(function () {
+	              me.isWIFI = true;
+	            }, 3000);
+	          } else {}
+	        }
+	      });
+	    }
 	  },
 	  routePush: function routePush(path, params) {
 	    if (path === 'Index') {
 	      this.refreshUrl(params);
 	      return false;
 	    }
-	    _system4.default.push({
+	    _system6.default.push({
 	      uri: path,
 	      params: params
 	    });
@@ -2781,10 +3252,124 @@
 	    uid: '1109a590ace58b390d584b8f1eff9b30personal', //一期不做定制推荐，uid写死
 	    passport: '1746414975%2540sina.sohu.com', //一期不做定制推荐，passport写死
 	    muid: '',
-	    playInfoApi: 'https://api.tv.sohu.com/phone_playinfo?callback=?',
+	    playInfoApi: 'https://api.tv.sohu.com/phone_playinfo?callback=',
 	    defaultHeader: 'https://css.tv.itc.cn/channel/space/avatar/03_small.jpg',
 	    scene: ''
 	  }
+	};
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * 播放信息
+	 * https://api.tv.sohu.com/phone_playinfo
+	 */
+	var useM3u8 = false;
+	var util = {
+	  isArray: function (obj) {
+	    return Object.prototype.toString.call(obj) === '[object Array]';
+	  },
+	  formatUrl: function (url) {
+	    url = url || '';
+	    if (this.isArray(url)) {
+	      url = url[0];
+	    }
+	    url = url.replace('http://', 'https://'); // mp4
+	    return url;
+	  }
+	};
+	var _ = __webpack_require__(5);
+	var fetch = $app_require$( '@app-module/system.fetch');;
+	var prompt = $app_require$( '@app-module/system.prompt');;
+	var Futil = __webpack_require__(6);
+	var gData = Futil.data;
+	module.exports = {
+	  video: {},
+	  playUrl: '',
+	  getPlayInfo: function (vid, site, callback) {
+	    var video = {};
+	    var me = this;
+	    fetch.fetch({
+	      url: gData.playInfoApi + '&vid=' + vid + '&uid=' + gData.uid + '&muid=' + gData.muid + '&site=' + site + '&plat=17&api_key=f351515304020cad28c92f70f002261c&sver=6.2&partner=78&poid=1&encoding=UTF-8',
+	      dataType: 'json',
+	      method: 'GET',
+	      header: {
+	        'content-type': 'application/json'
+	      },
+	      success: function (res) {
+	        var res = JSON.parse(res.data);
+	        if (res.status && res.data) {
+	          var urls = {},
+	              videosrc = '';
+	          video = res.data;
+	          urls = video.urls || {};
+	          for (var i in urls) {
+	            if (urls.hasOwnProperty(i)) {
+	              //i=m3u8 | mp4
+	              if (i === 'downloadUrl') {
+	                if (urls[i][0] && urls[i][0] !== '') {
+	                  urls[i][0] = util.formatUrl(urls[i][0]);
+	                }
+	              } else {
+	                for (var j in urls[i]) {
+	                  if (urls[i].hasOwnProperty(j)) {
+	                    //j= nor|hig| sup
+	                    _.each(urls[i][j], function (src, idx) {
+	                      src = util.formatUrl(src);
+	                      urls[i][j][idx] = src;
+	                    }, me);
+	                  }
+	                }
+	              }
+	            }
+	          }
+	          if (useM3u8 && !!urls['m3u8']) {
+	            console.log('m3u8');
+	            videosrc = urls['m3u8']['nor'][0] || urls['m3u8']['hig'][0] || urls['m3u8']['sup'][0];
+	            videosrc = encodeURI(videosrc);
+	          } else {
+	            console.log('not m3u8');
+	            videosrc = urls['downloadUrl'][0] || urls['mp4']['hig'][0] || '';
+	            videosrc = encodeURI(videosrc);
+	          }
+	          video.urls = urls;
+	          me.video = video;
+	          me.playUrl = videosrc;
+	          callback && callback(me.playUrl);
+	        }
+	      }
+	      // fail: function (res) {
+	      //   prompt.showToast({
+	      //     title: '提示',
+	      //     message: 'playInfo'+res.errMsg,
+	      //   })
+	      // }
+	    });
+	  }
+	  // getVideoInfo: function (vid,site, callback) {
+	  //   fetch.fetch({
+	  //     url: gData.playInfoApi+'vid='+vid+'&uid='+gData.uid+'&muid='+ gData.muid+'&site='+site+'&plat=17&api_key=f351515304020cad28c92f70f002261c&sver=6.2&partner=78&poid=1&encoding=UTF-8',
+	  //     dataType: 'json',
+	  //     method: 'GET',
+	  //     header: {
+	  //       'content-type': 'application/json'
+	  //     },
+	  //     success: function (res) {
+	  //       if (res.data.status == 200 && res.data) {
+	  //         var video = res.data.data;
+	  //         callback && callback(video);
+	  //       }
+	  //     },
+	  //     fail: function (res) {
+	  //       prompt.showToast({
+	  //         title: '提示',
+	  //         message: 'playInfo' + res.errMsg,
+	  //       })
+	  //     }
+	  //   })
+	  // },
 	};
 
 /***/ }

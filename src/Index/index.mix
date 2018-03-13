@@ -9,25 +9,45 @@
                 <span>{{$item.name}}</span>
             </text>
           </list-item>
-        </list>
+      </list>
     </div>
-    <div for="{{playList}}" id="{{$item.vid}}"  class='section play-list' >
-    <text>{{$idx}}</text>
-     <block if="{{$idx!==currPlayIndex}}">
-      <div class='player-container' id="{{$item.vid}}">
-        <div class="v-cover-container"  onclick="play">
-        <stack>
-          <image class='v-cover' src='{{$item.cover}}' style='resize-mode:contain'></image>
-          <div class='v-mask'></div>
-          <text class='v-title'>{{$item.video_name}}</text>
-          <image class='v-play-btn v-btn' src='../../images/play-ico.png' ></image>
-          <text class='v-info'>{{$item.play_count_short}}播放 | {{$item.time_length_format}}</text>
-          </stack>
+    <list class="section" scrollpage="{{scrollpage}}"  onscrollbottom="onReachBottom">
+      <list-item type="listItem"  id="{{$item.vid}}"  for="{{playList}}" class=' play-list' >
+      <stack>
+        <block if="{{$idx!==currPlayIndex}}">
+          <div class='player-container' id="{{$item.vid}}">
+          <div class="v-cover-container"  onclick="play({vid:$item.vid,site:$item.site,index:$idx})">
+          <stack>
+            <image class='v-cover' src='{{$item.cover}}' style='resize-mode:contain'></image>
+            <div class='v-mask'></div>
+            <div class='v-title'><text>{{$item.video_name}}{{isWIFI}}</text></div>
+            <div class='v-play-btn'>
+              <image class='v-btn' src='../Common/images/play-ico.png' ></image>
+            </div>
+            <div class='v-info'>
+            <text>{{$item.play_count_short}}播放 | {{$item.time_length_format}}</text></div>
+            </stack>
+          </div>
+          </div>
+        </block>
+        <div class="player" id="playerBox" style="height:422px"   >
+          <video id="player" if="{{$idx===currPlayIndex&&currPlayUrl!==''}}" src="{{currPlayUrl}}"  autoplay="{{isWIFI}}" controls="true" poster="https://photocdn.tv.sohu.com/img/20180302/pic_compress_2d4e7934-f71a-411c-a404-0a1d326f42e5_q_mini.png"></video>
         </div>
-      </div>
-     </block>
-     </div>
+        </stack>
 
+        <div class='v-opt-container cf' >
+          <div class='v-user'>
+            <image class='v-user-avatar' src="{{$item.header}}"></image>
+            <text if="{{$item.header!=undefined}}" class='v-user-name'>{{$item.userName}}</text>
+          </div>
+          <div class='like-wrap'>{{likeList[$item.vid].likeNum}}</div>
+        </div>
+      </list-item>
+      <list-item type="loadMore" class="load-more" if="{{loadingMore}}">
+          <progress type="circular"></progress>
+          <text>加载更多</text>
+      </list-item>
+     </list>
   </div>
 </template>
 <style src="./index.css"></style>
