@@ -1,7 +1,7 @@
 <template>
 <!-- index  -->
   <div class="page">
-    <tabs class="scroll-view_H" id="tabList1"  onchange="changeTabactive" index="0">
+    <tabs class="scroll-view_H" id="tabList"  onchange="changeTabactive" index="0">
         <image  class="nav-logo" src="../Common/logo.png" ></image>
         <tab-bar  mode="scrollable">
           <text id="{{$item.channel_id}}" for="{{channelList}}" class="scroll-view-item_H tab-text"  >
@@ -14,8 +14,6 @@
           <progress class="circular-1" type="circular"></progress>
           <text class="item-title">正在努力加载中······</text>
         </div>
-        <refresh class="refresh" onrefresh="refresh" refreshing="{{isRefreshing}}">
-
     <list class="section" scrollpage="{{scrollPage}}"  onscrollbottom="onReachBottom"  if="{{$item.channel_id==currentChannelId &&playList.length>0}}">
       <list-item type="listItem"  id="{{$item.vid}}"  for="{{playList}}" class=' play-list' >
       <stack>
@@ -36,7 +34,7 @@
           </div>
         </block>
         <div class="player" id="playerBox" style="height:422px"   >
-          <video id="player" if="{{$idx===currPlayIndex&&currPlayUrl!==''}}" src="{{currPlayUrl}}"  autoplay="{{isWIFI}}" controls="true" poster="https://photocdn.tv.sohu.com/img/20180302/pic_compress_2d4e7934-f71a-411c-a404-0a1d326f42e5_q_mini.png"></video>
+          <video id="player" if="{{$idx===currPlayIndex&&currPlayUrl!==''}}" src="{{currPlayUrl}}"  autoplay="{{isWIFI}}"  poster="https://photocdn.tv.sohu.com/img/20180302/pic_compress_2d4e7934-f71a-411c-a404-0a1d326f42e5_q_mini.png"></video>
         </div>
         </stack>
 
@@ -45,7 +43,8 @@
             <image class='v-user-avatar' src="{{$item.header}}"></image>
             <text if="{{$item.header!=undefined}}" class='v-user-name'>{{$item.userName}}</text>
           </div>
-          <div class='like-wrap'>{{likeList[$item.vid].likeNum}}</div>
+          <div class='like-wrap'>{{likeList[$item.vid].likeNum}}22222</div>
+        <div class="link-to-playpage" onclick="routePush('Play',{vid:$item.vid,site:$item.site,aid:$item.aid,user_id:$item.user_id})">ldfjldafjal</div>
         </div>
       </list-item>
       <list-item type="loadMore" class="load-more" if="{{loadingMore}}">

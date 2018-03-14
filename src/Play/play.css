@@ -7,7 +7,7 @@ page{
   flex-direction: column;
 }
 .wrap{
-    padding:40px 20px;
+    padding:20px 20px;
 }
 .hd-shadow{
 }
@@ -50,7 +50,7 @@ page{
 
 }
 .album-popup-list {
-    margin-top: 10px;
+    margin-top: 0px;
 }
 .album-popup-list .album-item {
     margin-bottom: 55px;
@@ -209,6 +209,7 @@ page{
   justify-content: space-between;
     flex-direction: row;
     height:60px;
+    margin-bottom: 10px;
 }
 .videoInfo-tip .title{
     font-size:30px;
@@ -328,24 +329,22 @@ flex-direction: column;
 
 .recom-popup-list {
   flex-direction: column;
-    margin-top: 0;
-    flex-grow: 1;
-    flex-shrink: 0;
+    margin-top: 0px;
     justify-content: center;
 }
 .recom-popup-list .item {
     height: 170px;
     margin: 20px;
 flex-direction: row;
+justify-content: space-between;
 }
-.recom-popup-list .item image {
-  /* width: 50%; */
-    width: 300px;
-    height: 170px;
-    left:20px;
+.recom-popup-list  .item image{
+  width: 300px;
+  height: 170px;
 }
 .recom-popup-list .item .info {
   flex-direction: column;
+  width:450px;
   padding:20px;
 }
 .recom-popup-list .item .title {
@@ -432,24 +431,19 @@ flex-direction: row;
     padding: 0 20px;
     padding-bottom:10px;
 }
-.comment-content .floor-box > view {
-    padding-top:6px;
-    padding-bottom:4px;
-}
-.comment-content .floor-box > view .head {
-    color:#a6a6a6;
-    font-size:26px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    height:54px;
-}
-.comment-content .floor-box > view .head .f-num {
-    font-size: 22px;
-}
-.comment-content .floor-box > view .floor-content {
-
-}
 .comment-content .content {
     margin-top: 4px
+}
+.item-content-circular {
+  margin-bottom: 60px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  flex:1;
+}
+.circular-1{
+  width: 60px;
+  height: 60px;
+   color:#09ba07;
 }

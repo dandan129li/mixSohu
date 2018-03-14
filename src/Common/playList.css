@@ -73,8 +73,12 @@
 width:30px;
 height:30px;
 margin-left:29px;
+  margin-top: 30px;
 }
-
+.link-to-playpage{
+  /* border:2px solid #000000; */
+  width: 30%;
+}
 .v-opt-container .like-wrap .like_num{
   top: -5px;
   left: 25px;

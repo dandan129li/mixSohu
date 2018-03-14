@@ -39,6 +39,9 @@
       "Index": {
         "component": "index"
       },
+      "Demo": {
+        "component": "index"
+      },
       "Play": {
         "component": "play",
         "path": "/play"

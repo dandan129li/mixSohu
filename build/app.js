@@ -48,7 +48,7 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	var $app_script$ = __webpack_require__(11)
+	var $app_script$ = __webpack_require__(15)
 	
 	$app_define$('@app-application/app', [], function($app_require$, $app_exports$, $app_module$){
 	     $app_script$($app_module$, $app_exports$, $app_require$)
@@ -62,13 +62,13 @@
 
 /***/ },
 
-/***/ 11:
+/***/ 15:
 /***/ function(module, exports) {
 
 	module.exports = function(module, exports, $app_require$){"use strict";
 	
 	module.exports = {};
-	(exports.default || module.exports).manifest = {"package":"com.application.demo","name":"mixSohu","versionName":"1.0.0","versionCode":"1","minPlatformVersion":"101","icon":"/Common/logo.png","features":[{"name":"system.prompt"},{"name":"system.router"},{"name":"system.shortcut"},{"name":"system.fetch"},{"name":"system.device"},{"name":"system.network"}],"permissions":[{"origin":"*"}],"config":{"logLevel":"debug"},"router":{"entry":"Index2","pages":{"Index":{"component":"index"},"Index2":{"component":"index"}}},"display":{"titleBarBackgroundColor":"#f2f2f2","titleBarTextColor":"#414141","menu":false,"fullScreen":true,"titleBar":false}};
+	(exports.default || module.exports).manifest = {"package":"com.application.demo","name":"mixSohu","versionName":"1.0.0","versionCode":"1","minPlatformVersion":"101","icon":"/Common/logo.png","features":[{"name":"system.prompt"},{"name":"system.router"},{"name":"system.shortcut"},{"name":"system.fetch"},{"name":"system.device"},{"name":"system.network"}],"permissions":[{"origin":"*"}],"config":{"logLevel":"debug"},"router":{"entry":"Demo","pages":{"Index":{"component":"index"},"Demo":{"component":"index"},"Play":{"component":"play","path":"/play"}}},"display":{"titleBarBackgroundColor":"#f2f2f2","titleBarTextColor":"#414141","menu":false,"fullScreen":true,"titleBar":false}};
 	}
 
 /***/ }
@@ -81,7 +81,7 @@
   else {
     window.createAppHandler = createAppHandler
     // H5注入manifest以获取features
-    global.manifest = {"package":"com.application.demo","name":"mixSohu","versionName":"1.0.0","versionCode":"1","minPlatformVersion":"101","icon":"/Common/logo.png","features":[{"name":"system.prompt"},{"name":"system.router"},{"name":"system.shortcut"},{"name":"system.fetch"},{"name":"system.device"},{"name":"system.network"}],"permissions":[{"origin":"*"}],"config":{"logLevel":"debug"},"router":{"entry":"Index2","pages":{"Index":{"component":"index"},"Index2":{"component":"index"}}},"display":{"titleBarBackgroundColor":"#f2f2f2","titleBarTextColor":"#414141","menu":false,"fullScreen":true,"titleBar":false}};
+    global.manifest = {"package":"com.application.demo","name":"mixSohu","versionName":"1.0.0","versionCode":"1","minPlatformVersion":"101","icon":"/Common/logo.png","features":[{"name":"system.prompt"},{"name":"system.router"},{"name":"system.shortcut"},{"name":"system.fetch"},{"name":"system.device"},{"name":"system.network"}],"permissions":[{"origin":"*"}],"config":{"logLevel":"debug"},"router":{"entry":"Demo","pages":{"Index":{"component":"index"},"Demo":{"component":"index"},"Play":{"component":"play","path":"/play"}}},"display":{"titleBarBackgroundColor":"#f2f2f2","titleBarTextColor":"#414141","menu":false,"fullScreen":true,"titleBar":false}};
   }
 })();
 //# sourceMappingURL=app.js.map

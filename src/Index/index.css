@@ -9,14 +9,14 @@
     padding: 0 0px;
 }
 .nav-logo{
-  width: 217px;
+  width: 161px;
   height: 41px;
   margin-top:40px;
   margin-left: 10px;
 }
 tab-bar{
-  margin-left:235px;
-  margin-top:-70px;
+  margin-left:181px;
+  margin-top:-72px;
 }
 .ui-navbar{
   flex-direction: row;
@@ -65,7 +65,8 @@ tab-bar{
 .v-opt-container{
   width: 100%;
   font-size: 24px;
-  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .v-opt-container .v-user{
   margin-left: 24px;
@@ -84,11 +85,7 @@ tab-bar{
   align-items:center;
   line-height: 40px;
 }
-.v-opt-container .like-wrap{
-  height: 30px;
-  margin-top: 26px;
-  line-height: 30px;
-}
+
 .v-opt-container .share-wrap{
   height: 40px;
   margin-right: 29px;
@@ -114,7 +111,7 @@ tab-bar{
   flex:1;
 }
 .circular-1{
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
    color:#09ba07;
 }

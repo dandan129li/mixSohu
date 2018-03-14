@@ -47,9 +47,9 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $app_template$ = __webpack_require__(1)
-	var $app_style$ = __webpack_require__(2)
-	var $app_script$ = __webpack_require__(3)
+	var $app_template$ = __webpack_require__(4)
+	var $app_style$ = __webpack_require__(5)
+	var $app_script$ = __webpack_require__(6)
 	
 	$app_define$('@app-component/index', [], function($app_require$, $app_exports$, $app_module$){
 	     $app_script$($app_module$, $app_exports$, $app_require$)
@@ -64,7 +64,10 @@
 
 
 /***/ },
-/* 1 */
+/* 1 */,
+/* 2 */,
+/* 3 */,
+/* 4 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -77,13 +80,13 @@
 	    {
 	      "type": "tabs",
 	      "attr": {
-	        "id": "tabList1",
+	        "id": "tabList",
 	        "index": "0"
 	      },
 	      "classList": [
 	        "scroll-view_H"
 	      ],
-	      "id": "tabList1",
+	      "id": "tabList",
 	      "events": {
 	        "change": "changeTabactive"
 	      },
@@ -169,141 +172,127 @@
 	                  ]
 	                },
 	                {
-	                  "type": "refresh",
+	                  "type": "list",
 	                  "attr": {
-	                    "refreshing": function () {return this.isRefreshing}
+	                    "scrollpage": function () {return this.scrollPage}
 	                  },
 	                  "classList": [
-	                    "refresh"
+	                    "section"
 	                  ],
 	                  "events": {
-	                    "refresh": "refresh"
+	                    "scrollbottom": "onReachBottom"
 	                  },
+	                  "shown": function () {return this.$item.channel_id==this.currentChannelId&&this.playList.length>0},
 	                  "children": [
 	                    {
-	                      "type": "list",
+	                      "type": "list-item",
 	                      "attr": {
-	                        "scrollpage": function () {return this.scrollPage}
+	                        "type": "listItem",
+	                        "id": function () {return this.$item.vid}
 	                      },
+	                      "id": function () {return this.$item.vid},
+	                      "repeat": function () {return this.playList},
 	                      "classList": [
-	                        "section"
+	                        "play-list"
 	                      ],
-	                      "events": {
-	                        "scrollbottom": "onReachBottom"
-	                      },
-	                      "shown": function () {return this.$item.channel_id==this.currentChannelId&&this.playList.length>0},
 	                      "children": [
 	                        {
-	                          "type": "list-item",
-	                          "attr": {
-	                            "type": "listItem",
-	                            "id": function () {return this.$item.vid}
-	                          },
-	                          "id": function () {return this.$item.vid},
-	                          "repeat": function () {return this.playList},
-	                          "classList": [
-	                            "play-list"
-	                          ],
+	                          "type": "stack",
+	                          "attr": {},
 	                          "children": [
 	                            {
-	                              "type": "stack",
+	                              "type": "block",
 	                              "attr": {},
+	                              "shown": function () {return this.$idx!==this.currPlayIndex},
 	                              "children": [
 	                                {
-	                                  "type": "block",
-	                                  "attr": {},
-	                                  "shown": function () {return this.$idx!==this.currPlayIndex},
+	                                  "type": "div",
+	                                  "attr": {
+	                                    "id": function () {return this.$item.vid}
+	                                  },
+	                                  "classList": [
+	                                    "player-container"
+	                                  ],
+	                                  "id": function () {return this.$item.vid},
 	                                  "children": [
 	                                    {
 	                                      "type": "div",
-	                                      "attr": {
-	                                        "id": function () {return this.$item.vid}
-	                                      },
+	                                      "attr": {},
 	                                      "classList": [
-	                                        "player-container"
+	                                        "v-cover-container"
 	                                      ],
-	                                      "id": function () {return this.$item.vid},
+	                                      "events": {
+	                                        "click": function (evt) {this.play({vid:this.$item.vid,site:this.$item.site,index:this.$idx},evt)}
+	                                      },
 	                                      "children": [
 	                                        {
-	                                          "type": "div",
+	                                          "type": "stack",
 	                                          "attr": {},
-	                                          "classList": [
-	                                            "v-cover-container"
-	                                          ],
-	                                          "events": {
-	                                            "click": function (evt) {this.play({vid:this.$item.vid,site:this.$item.site,index:this.$idx},evt)}
-	                                          },
 	                                          "children": [
 	                                            {
-	                                              "type": "stack",
+	                                              "type": "image",
+	                                              "attr": {
+	                                                "src": function () {return this.$item.cover}
+	                                              },
+	                                              "classList": [
+	                                                "v-cover"
+	                                              ],
+	                                              "style": {
+	                                                "resizeMode": "contain"
+	                                              }
+	                                            },
+	                                            {
+	                                              "type": "div",
 	                                              "attr": {},
+	                                              "classList": [
+	                                                "v-mask"
+	                                              ]
+	                                            },
+	                                            {
+	                                              "type": "div",
+	                                              "attr": {},
+	                                              "classList": [
+	                                                "v-title"
+	                                              ],
+	                                              "children": [
+	                                                {
+	                                                  "type": "text",
+	                                                  "attr": {
+	                                                    "value": function () {return this.$item.video_name}
+	                                                  }
+	                                                }
+	                                              ]
+	                                            },
+	                                            {
+	                                              "type": "div",
+	                                              "attr": {},
+	                                              "classList": [
+	                                                "v-play-btn"
+	                                              ],
 	                                              "children": [
 	                                                {
 	                                                  "type": "image",
 	                                                  "attr": {
-	                                                    "src": function () {return this.$item.cover}
+	                                                    "src": "../Common/images/play-ico.png"
 	                                                  },
 	                                                  "classList": [
-	                                                    "v-cover"
-	                                                  ],
-	                                                  "style": {
-	                                                    "resizeMode": "contain"
+	                                                    "v-btn"
+	                                                  ]
+	                                                }
+	                                              ]
+	                                            },
+	                                            {
+	                                              "type": "div",
+	                                              "attr": {},
+	                                              "classList": [
+	                                                "v-info"
+	                                              ],
+	                                              "children": [
+	                                                {
+	                                                  "type": "text",
+	                                                  "attr": {
+	                                                    "value": function () {return (this.$item.play_count_short) + '播放 | ' + (this.$item.time_length_format)}
 	                                                  }
-	                                                },
-	                                                {
-	                                                  "type": "div",
-	                                                  "attr": {},
-	                                                  "classList": [
-	                                                    "v-mask"
-	                                                  ]
-	                                                },
-	                                                {
-	                                                  "type": "div",
-	                                                  "attr": {},
-	                                                  "classList": [
-	                                                    "v-title"
-	                                                  ],
-	                                                  "children": [
-	                                                    {
-	                                                      "type": "text",
-	                                                      "attr": {
-	                                                        "value": function () {return this.$item.video_name}
-	                                                      }
-	                                                    }
-	                                                  ]
-	                                                },
-	                                                {
-	                                                  "type": "div",
-	                                                  "attr": {},
-	                                                  "classList": [
-	                                                    "v-play-btn"
-	                                                  ],
-	                                                  "children": [
-	                                                    {
-	                                                      "type": "image",
-	                                                      "attr": {
-	                                                        "src": "../Common/images/play-ico.png"
-	                                                      },
-	                                                      "classList": [
-	                                                        "v-btn"
-	                                                      ]
-	                                                    }
-	                                                  ]
-	                                                },
-	                                                {
-	                                                  "type": "div",
-	                                                  "attr": {},
-	                                                  "classList": [
-	                                                    "v-info"
-	                                                  ],
-	                                                  "children": [
-	                                                    {
-	                                                      "type": "text",
-	                                                      "attr": {
-	                                                        "value": function () {return (this.$item.play_count_short) + '播放 | ' + (this.$item.time_length_format)}
-	                                                      }
-	                                                    }
-	                                                  ]
 	                                                }
 	                                              ]
 	                                            }
@@ -312,32 +301,69 @@
 	                                      ]
 	                                    }
 	                                  ]
-	                                },
+	                                }
+	                              ]
+	                            },
+	                            {
+	                              "type": "div",
+	                              "attr": {
+	                                "id": "playerBox"
+	                              },
+	                              "classList": [
+	                                "player"
+	                              ],
+	                              "id": "playerBox",
+	                              "style": {
+	                                "height": "422px"
+	                              },
+	                              "children": [
 	                                {
-	                                  "type": "div",
+	                                  "type": "video",
 	                                  "attr": {
-	                                    "id": "playerBox"
+	                                    "id": "player",
+	                                    "src": function () {return this.currPlayUrl},
+	                                    "autoplay": function () {return this.isWIFI},
+	                                    "poster": "https://photocdn.tv.sohu.com/img/20180302/pic_compress_2d4e7934-f71a-411c-a404-0a1d326f42e5_q_mini.png"
+	                                  },
+	                                  "id": "player",
+	                                  "shown": function () {return this.$idx===this.currPlayIndex&&this.currPlayUrl!==''}
+	                                }
+	                              ]
+	                            }
+	                          ]
+	                        },
+	                        {
+	                          "type": "div",
+	                          "attr": {},
+	                          "classList": [
+	                            "v-opt-container",
+	                            "cf"
+	                          ],
+	                          "children": [
+	                            {
+	                              "type": "div",
+	                              "attr": {},
+	                              "classList": [
+	                                "v-user"
+	                              ],
+	                              "children": [
+	                                {
+	                                  "type": "image",
+	                                  "attr": {
+	                                    "src": function () {return this.$item.header}
 	                                  },
 	                                  "classList": [
-	                                    "player"
-	                                  ],
-	                                  "id": "playerBox",
-	                                  "style": {
-	                                    "height": "422px"
+	                                    "v-user-avatar"
+	                                  ]
+	                                },
+	                                {
+	                                  "type": "text",
+	                                  "attr": {
+	                                    "value": function () {return this.$item.userName}
 	                                  },
-	                                  "children": [
-	                                    {
-	                                      "type": "video",
-	                                      "attr": {
-	                                        "id": "player",
-	                                        "src": function () {return this.currPlayUrl},
-	                                        "autoplay": function () {return this.isWIFI},
-	                                        "controls": "true",
-	                                        "poster": "https://photocdn.tv.sohu.com/img/20180302/pic_compress_2d4e7934-f71a-411c-a404-0a1d326f42e5_q_mini.png"
-	                                      },
-	                                      "id": "player",
-	                                      "shown": function () {return this.$idx===this.currPlayIndex&&this.currPlayUrl!==''}
-	                                    }
+	                                  "shown": function () {return this.$item.header!=undefined},
+	                                  "classList": [
+	                                    "v-user-name"
 	                                  ]
 	                                }
 	                              ]
@@ -346,72 +372,44 @@
 	                              "type": "div",
 	                              "attr": {},
 	                              "classList": [
-	                                "v-opt-container",
-	                                "cf"
-	                              ],
-	                              "children": [
-	                                {
-	                                  "type": "div",
-	                                  "attr": {},
-	                                  "classList": [
-	                                    "v-user"
-	                                  ],
-	                                  "children": [
-	                                    {
-	                                      "type": "image",
-	                                      "attr": {
-	                                        "src": function () {return this.$item.header}
-	                                      },
-	                                      "classList": [
-	                                        "v-user-avatar"
-	                                      ]
-	                                    },
-	                                    {
-	                                      "type": "text",
-	                                      "attr": {
-	                                        "value": function () {return this.$item.userName}
-	                                      },
-	                                      "shown": function () {return this.$item.header!=undefined},
-	                                      "classList": [
-	                                        "v-user-name"
-	                                      ]
-	                                    }
-	                                  ]
-	                                },
-	                                {
-	                                  "type": "div",
-	                                  "attr": {},
-	                                  "classList": [
-	                                    "like-wrap"
-	                                  ]
-	                                }
+	                                "like-wrap"
 	                              ]
-	                            }
-	                          ]
-	                        },
-	                        {
-	                          "type": "list-item",
-	                          "attr": {
-	                            "type": "loadMore"
-	                          },
-	                          "classList": [
-	                            "load-more"
-	                          ],
-	                          "shown": function () {return this.loadingMore},
-	                          "children": [
-	                            {
-	                              "type": "progress",
-	                              "attr": {
-	                                "type": "circular"
-	                              }
 	                            },
 	                            {
-	                              "type": "text",
-	                              "attr": {
-	                                "value": "加载更多"
+	                              "type": "div",
+	                              "attr": {},
+	                              "classList": [
+	                                "link-to-playpage"
+	                              ],
+	                              "events": {
+	                                "click": function (evt) {this.routePush('Play',{vid:this.$item.vid,site:this.$item.site,aid:this.$item.aid,user_id:this.$item.user_id},evt)}
 	                              }
 	                            }
 	                          ]
+	                        }
+	                      ]
+	                    },
+	                    {
+	                      "type": "list-item",
+	                      "attr": {
+	                        "type": "loadMore"
+	                      },
+	                      "classList": [
+	                        "load-more"
+	                      ],
+	                      "shown": function () {return this.loadingMore},
+	                      "children": [
+	                        {
+	                          "type": "progress",
+	                          "attr": {
+	                            "type": "circular"
+	                          }
+	                        },
+	                        {
+	                          "type": "text",
+	                          "attr": {
+	                            "value": "加载更多"
+	                          }
 	                        }
 	                      ]
 	                    }
@@ -427,7 +425,7 @@
 	}
 
 /***/ },
-/* 2 */
+/* 5 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -700,6 +698,7 @@
 	    "width": "30px",
 	    "height": "30px",
 	    "marginLeft": "29px",
+	    "marginTop": "30px",
 	    "_meta": {
 	      "ruleDef": [
 	        {
@@ -720,9 +719,10 @@
 	          "v": "like-wrap"
 	        }
 	      ]
-	    },
-	    "marginTop": "26px",
-	    "lineHeight": "30px"
+	    }
+	  },
+	  ".link-to-playpage": {
+	    "width": "30%"
 	  },
 	  ".v-opt-container .like-wrap .like_num": {
 	    "top": "-5px",
@@ -888,14 +888,14 @@
 	    "flex": 1
 	  },
 	  ".nav-logo": {
-	    "width": "217px",
+	    "width": "161px",
 	    "height": "41px",
 	    "marginTop": "40px",
 	    "marginLeft": "10px"
 	  },
 	  "tab-bar": {
-	    "marginLeft": "235px",
-	    "marginTop": "-70px"
+	    "marginLeft": "181px",
+	    "marginTop": "-72px"
 	  },
 	  ".ui-navbar": {
 	    "flexDirection": "row",
@@ -943,7 +943,8 @@
 	  ".v-opt-container": {
 	    "width": "100%",
 	    "fontSize": "24px",
-	    "display": "flex"
+	    "flexDirection": "row",
+	    "justifyContent": "space-between"
 	  },
 	  ".v-opt-container .v-user": {
 	    "marginLeft": "24px",
@@ -1113,27 +1114,27 @@
 	    "flex": 1
 	  },
 	  ".circular-1": {
-	    "width": "100px",
-	    "height": "100px",
+	    "width": "60px",
+	    "height": "60px",
 	    "color": "#09ba07"
 	  }
 	}
 
 /***/ },
-/* 3 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function(module, exports, $app_require$){'use strict';
 	
-	var _common = __webpack_require__(4);
+	var _common = __webpack_require__(7);
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _util = __webpack_require__(6);
+	var _util = __webpack_require__(9);
 	
 	var _util2 = _interopRequireDefault(_util);
 	
-	var _playInfo = __webpack_require__(7);
+	var _playInfo = __webpack_require__(10);
 	
 	var _playInfo2 = _interopRequireDefault(_playInfo);
 	
@@ -1499,9 +1500,12 @@
 	
 	    this.options.channel_id = this.channelList && this.channelList[e.index].channel_id;
 	    this.currentChannelId = this.options.channel_id;
+	    this.currPlayIndex = '';
 	    this.chlData('fresh');
 	  },
 	  routePush: function routePush(path, params) {
+	    console.log(JSON.stringify(params));
+	
 	    _system6.default.push({
 	      uri: path,
 	      params: params
@@ -1510,14 +1514,14 @@
 	};}
 
 /***/ },
-/* 4 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Created by guoqingzhou on 16/12/22.
 	 * 公用方法
 	 */
-	var _ = __webpack_require__(5);
+	var _ = __webpack_require__(8);
 	(function () {
 	    var common = {
 	        api_uri: 'https://rc.vrs.sohu.com/56app/p',
@@ -1528,6 +1532,7 @@
 	            'partner': '78',
 	            'poid': '1'
 	        },
+	        tv_api_uri: 'https://api.tv.sohu.com',
 	        obj2Query: function (obj) {
 	            return Object.keys(obj).map(function (k) {
 	                return encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]);
@@ -1778,7 +1783,7 @@
 	})();
 
 /***/ },
-/* 5 */
+/* 8 */
 /***/ function(module, exports) {
 
 	/**
@@ -3309,10 +3314,10 @@
 	}).call(this);
 
 /***/ },
-/* 6 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var common = __webpack_require__(4);
+	var common = __webpack_require__(7);
 	var fetch = $app_require$( '@app-module/system.fetch');;
 	var device = $app_require$( '@app-module/system.device');;
 	module.exports = {
@@ -3360,7 +3365,7 @@
 	};
 
 /***/ },
-/* 7 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3381,10 +3386,10 @@
 	    return url;
 	  }
 	};
-	var _ = __webpack_require__(5);
+	var _ = __webpack_require__(8);
 	var fetch = $app_require$( '@app-module/system.fetch');;
 	var prompt = $app_require$( '@app-module/system.prompt');;
-	var Futil = __webpack_require__(6);
+	var Futil = __webpack_require__(9);
 	var gData = Futil.data;
 	module.exports = {
 	  video: {},

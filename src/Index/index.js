@@ -366,9 +366,12 @@ module.exports = {
       // this.playList=[];
       this.options.channel_id=this.channelList&&this.channelList[e.index].channel_id;
       this.currentChannelId=this.options.channel_id;
+      this.currPlayIndex='';
       this.chlData('fresh');
     },
     routePush: function (path,params) {
+      console.log(JSON.stringify(params))
+      // return false;
       router.push({
        uri:path,
         params: params

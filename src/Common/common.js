@@ -13,6 +13,7 @@ var _ = require("./underscore.js");
             'partner': '78',
             'poid': '1'
         },
+        tv_api_uri: 'https://api.tv.sohu.com',
         obj2Query: function (obj) {
             return Object.keys(obj).map(function (k) {
                 return encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]);
