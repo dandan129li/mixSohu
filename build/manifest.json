@@ -23,6 +23,12 @@
     },
     {
       "name": "system.network"
+    },
+    {
+      "name": "system.share"
+    },
+    {
+      "name": "system.storage"
     }
   ],
   "permissions": [
@@ -53,6 +59,12 @@
     "titleBarTextColor": "#414141",
     "menu": false,
     "fullScreen": true,
-    "titleBar": false
+    "titleBar": false,
+    "pages": {
+      "Play": {
+        "fullScreen": true,
+        "titleBar": false
+      }
+    }
   }
 }

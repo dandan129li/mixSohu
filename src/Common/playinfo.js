@@ -2,7 +2,7 @@
  * 播放信息
  * https://api.tv.sohu.com/phone_playinfo
  */
-var useM3u8 = false;
+var useM3u8 = true;
 var util = {
   isArray : function (obj) {
     return Object.prototype.toString.call(obj) === '[object Array]';

@@ -47,9 +47,9 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $app_template$ = __webpack_require__(11)
-	var $app_style$ = __webpack_require__(12)
-	var $app_script$ = __webpack_require__(13)
+	var $app_template$ = __webpack_require__(9)
+	var $app_style$ = __webpack_require__(10)
+	var $app_script$ = __webpack_require__(11)
 	
 	$app_define$('@app-component/play', [], function($app_require$, $app_exports$, $app_module$){
 	     $app_script$($app_module$, $app_exports$, $app_require$)
@@ -68,16 +68,14 @@
 /* 2 */,
 /* 3 */,
 /* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Created by guoqingzhou on 16/12/22.
 	 * 公用方法
 	 */
-	var _ = __webpack_require__(8);
+	var _ = __webpack_require__(6);
 	(function () {
 	    var common = {
 	        api_uri: 'https://rc.vrs.sohu.com/56app/p',
@@ -339,7 +337,7 @@
 	})();
 
 /***/ },
-/* 8 */
+/* 6 */
 /***/ function(module, exports) {
 
 	/**
@@ -1870,9 +1868,9 @@
 	}).call(this);
 
 /***/ },
-/* 9 */,
-/* 10 */,
-/* 11 */
+/* 7 */,
+/* 8 */,
+/* 9 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -1925,24 +1923,39 @@
 	      "shown": function () {return this.videoLoaded},
 	      "children": [
 	        {
-	          "type": "video",
-	          "attr": {
-	            "id": "player",
-	            "src": function () {return this.videosrc},
-	            "poster": function () {return this.poster},
-	            "autoplay": function () {return this.isWIFI}
-	          },
-	          "id": "player"
-	        },
-	        {
-	          "type": "text",
-	          "attr": {
-	            "value": "您正在使用非wifi网络，播放将产生流量费用"
-	          },
-	          "classList": [
-	            "wifi-tip"
-	          ],
-	          "shown": function () {return this.showNoneWifiWarning}
+	          "type": "stack",
+	          "attr": {},
+	          "children": [
+	            {
+	              "type": "video",
+	              "attr": {
+	                "id": "player",
+	                "src": function () {return this.videosrc},
+	                "poster": function () {return this.poster},
+	                "autoplay": function () {return this.isWIFI}
+	              },
+	              "id": "player"
+	            },
+	            {
+	              "type": "text",
+	              "attr": {
+	                "value": "您正在使用非wifi网络，播放将产生流量费用"
+	              },
+	              "classList": [
+	                "wifi-tip"
+	              ],
+	              "shown": function () {return this.showNoneWifiWarning}
+	            },
+	            {
+	              "type": "image",
+	              "attr": {
+	                "src": "../Common/images/like-ico.png"
+	              },
+	              "classList": [
+	                "video_back"
+	              ]
+	            }
+	          ]
 	        }
 	      ]
 	    },
@@ -2658,7 +2671,7 @@
 	}
 
 /***/ },
-/* 12 */
+/* 10 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -3115,11 +3128,13 @@
 	    "top": "0px",
 	    "left": "0px",
 	    "justifyContent": "center",
-	    "zIndex": 9999
+	    "zIndex": 9999,
+	    "alignItems": "center",
+	    "flexDirection": "column"
 	  },
 	  ".player video": {
-	    "width": "100%",
-	    "height": "100%",
+	    "width": "750px",
+	    "height": "422px",
 	    "_meta": {
 	      "ruleDef": [
 	        {
@@ -3147,7 +3162,6 @@
 	    "fontSize": "28px",
 	    "color": "#ffffff",
 	    "backgroundColor": "#e64340",
-	    "bottom": "-42px",
 	    "_meta": {
 	      "ruleDef": [
 	        {
@@ -3166,6 +3180,31 @@
 	          "i": false,
 	          "a": "element",
 	          "v": "wifi-tip"
+	        }
+	      ]
+	    }
+	  },
+	  ".player .video_back": {
+	    "width": "32px",
+	    "height": "30px",
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "player"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "video_back"
 	        }
 	      ]
 	    }
@@ -4070,22 +4109,22 @@
 	}
 
 /***/ },
-/* 13 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function(module, exports, $app_require$){'use strict';
 	
 	var _data;
 	
-	var _underscore = __webpack_require__(8);
+	var _underscore = __webpack_require__(6);
 	
 	var _underscore2 = _interopRequireDefault(_underscore);
 	
-	var _common = __webpack_require__(7);
+	var _common = __webpack_require__(5);
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _wxDiscode = __webpack_require__(14);
+	var _wxDiscode = __webpack_require__(12);
 	
 	var _wxDiscode2 = _interopRequireDefault(_wxDiscode);
 	
@@ -4602,7 +4641,7 @@
 	};}
 
 /***/ },
-/* 14 */
+/* 12 */
 /***/ function(module, exports) {
 
 	// HTML 支持的数学符号
