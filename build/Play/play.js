@@ -1923,24 +1923,39 @@
 	      "shown": function () {return this.videoLoaded},
 	      "children": [
 	        {
-	          "type": "video",
-	          "attr": {
-	            "id": "player",
-	            "src": function () {return this.videosrc},
-	            "poster": function () {return this.poster},
-	            "autoplay": function () {return this.isWIFI}
-	          },
-	          "id": "player"
-	        },
-	        {
-	          "type": "text",
-	          "attr": {
-	            "value": "您正在使用非wifi网络，播放将产生流量费用"
-	          },
-	          "classList": [
-	            "wifi-tip"
-	          ],
-	          "shown": function () {return this.showNoneWifiWarning}
+	          "type": "stack",
+	          "attr": {},
+	          "children": [
+	            {
+	              "type": "video",
+	              "attr": {
+	                "id": "player",
+	                "src": function () {return this.videosrc},
+	                "poster": function () {return this.poster},
+	                "autoplay": function () {return this.isWIFI}
+	              },
+	              "id": "player"
+	            },
+	            {
+	              "type": "text",
+	              "attr": {
+	                "value": "您正在使用非wifi网络，播放将产生流量费用"
+	              },
+	              "classList": [
+	                "wifi-tip"
+	              ],
+	              "shown": function () {return this.showNoneWifiWarning}
+	            },
+	            {
+	              "type": "image",
+	              "attr": {
+	                "src": "../Common/images/like-ico.png"
+	              },
+	              "classList": [
+	                "video_back"
+	              ]
+	            }
+	          ]
 	        }
 	      ]
 	    },
@@ -3170,11 +3185,13 @@
 	    "top": "0px",
 	    "left": "0px",
 	    "justifyContent": "center",
-	    "zIndex": 9999
+	    "zIndex": 9999,
+	    "alignItems": "center",
+	    "flexDirection": "column"
 	  },
 	  ".player video": {
-	    "width": "100%",
-	    "height": "100%",
+	    "width": "750px",
+	    "height": "422px",
 	    "_meta": {
 	      "ruleDef": [
 	        {
@@ -3202,7 +3219,6 @@
 	    "fontSize": "28px",
 	    "color": "#ffffff",
 	    "backgroundColor": "#e64340",
-	    "bottom": "-42px",
 	    "_meta": {
 	      "ruleDef": [
 	        {
@@ -3221,6 +3237,31 @@
 	          "i": false,
 	          "a": "element",
 	          "v": "wifi-tip"
+	        }
+	      ]
+	    }
+	  },
+	  ".player .video_back": {
+	    "width": "32px",
+	    "height": "30px",
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "player"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "video_back"
 	        }
 	      ]
 	    }
