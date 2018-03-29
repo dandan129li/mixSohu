@@ -5,6 +5,8 @@ import prompt from '@system.prompt'
 import fetch from '@system.fetch'
 import router from '@system.router'
 import network from '@system.network'
+import share from '@system.share'
+
 var video_blank_img = "https://m.tv.sohu.com/upload/touch/img/blank_h5.png?v=1";
 var gData=Futil.data;
 module.exports = {
@@ -305,17 +307,6 @@ module.exports = {
         self.likeList=_likeList;
       }
     },
-    // jumpToPlay: function(event){
-    //   var dataset = event.currentTarget.dataset;
-    //   var index = dataset.index;
-    //   var video = this.playList[index];
-    //   if (this.likeList[video.vid]){
-    //     video.likeNum = this.likeList[video.vid].likeNum;
-    //   }
-    //   var url = common.makeWxPlayUrl(video);
-    //   this.videoContext && this.videoContext.pause();
-    //   this.routePush('Play',url);
-    // },
     playError : function(e){
       console.log('error:'+e);
     },
@@ -368,6 +359,18 @@ module.exports = {
       this.currentChannelId=this.options.channel_id;
       this.currPlayIndex='';
       this.chlData('fresh');
+    },
+    shareText: function (sharedata) {
+      share.share({
+        type: 'text/html',
+        data:sharedata.title+sharedata.playUrl,
+        success:function(data){
+          console.log("分享成功");
+        },
+        fail: function(data, code) {
+          console.log("handling fail, code=" + code);
+        }
+      });
     },
     routePush: function (path,params) {
       console.log(JSON.stringify(params))

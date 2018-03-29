@@ -4,6 +4,7 @@ import WxParse from '../Common/wxDiscode.js'
 import prompt from '@system.prompt'
 import router from '@system.router'
 import fetch from '@system.fetch'
+import share from '@system.share'
 import device from '@system.device'
 import network from '@system.network'
 var useM3u8 = false;
@@ -508,11 +509,23 @@ module.exports={
       //剧集信息
       //推荐视频
       if (aid && Number(aid) > 0) {
-          // me.getAlbumList(aid);
-          // me.getRecomList(aid);
+          me.getAlbumList(aid);
+          me.getRecomList(aid);
       }
       //评论
       me.loadCommentFirst(vid);
+    },
+    shareText: function (sharedata) {
+      share.share({
+        type: 'text/html',
+        data:sharedata.title+sharedata.playUrl,
+        success:function(data){
+          console.log("分享成功");
+        },
+        fail: function(data, code) {
+          console.log("handling fail, code=" + code);
+        }
+      });
     },
     routePush: function (path,params) {
     this.refreshUrl(params)

@@ -86,18 +86,14 @@ tab-bar{
   line-height: 40px;
 }
 
-.v-opt-container .share-wrap{
-  height: 40px;
-  margin-right: 29px;
-  padding: 22px 0 32px;
+.v-opt-container .share_area {
+margin-right: 24px;
+align-items: center;
+align-self: flex-end;
 }
-.v-opt-container .share-close{
-  height: 40px;
-}
-.v-opt-container .share-text{
-  color: #545454;
-  align-items:center;
-  line-height: 40px;
+.v-opt-container .share_area image{
+width: 30px;
+height: 30px;
 }
 .item-container{
   flex-direction: column;

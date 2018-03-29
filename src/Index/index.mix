@@ -14,6 +14,7 @@
           <progress class="circular-1" type="circular"></progress>
           <text class="item-title">正在努力加载中······</text>
         </div>
+        <refresh class="refresh" onrefresh="refresh" refreshing="{{isRefreshing}}">
     <list class="section" scrollpage="{{scrollPage}}"  onscrollbottom="onReachBottom"  if="{{$item.channel_id==currentChannelId &&playList.length>0}}">
       <list-item type="listItem"  id="{{$item.vid}}"  for="{{playList}}" class=' play-list' >
       <stack>
@@ -43,9 +44,13 @@
             <image class='v-user-avatar' src="{{$item.header}}"></image>
             <text if="{{$item.header!=undefined}}" class='v-user-name'>{{$item.userName}}</text>
           </div>
-          <div class='like-wrap'>{{likeList[$item.vid].likeNum}}22222</div>
-        <div class="link-to-playpage" onclick="routePush('Play',{vid:$item.vid,site:$item.site,aid:$item.aid,user_id:$item.user_id})">ldfjldafjal</div>
+          <div class='like-wrap'>{{likeList[$item.vid].likeNum}}</div>
+          <div class="link-to-playpage" onclick="routePush('Play',{vid:$item.vid,site:$item.site,aid:$item.aid,user_id:$item.user_id})"></div>
+          <div class="share_area" onclick="shareText({title:$item.video_name,cover:$item.cover,playUrl:$item.play_url})">
+            <image src="../Common/images/share-ico.png"></image>
+          </div>
         </div>
+
       </list-item>
       <list-item type="loadMore" class="load-more" if="{{loadingMore}}">
           <progress type="circular"></progress>

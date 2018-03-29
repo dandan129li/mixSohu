@@ -47,9 +47,9 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $app_template$ = __webpack_require__(11)
-	var $app_style$ = __webpack_require__(12)
-	var $app_script$ = __webpack_require__(13)
+	var $app_template$ = __webpack_require__(9)
+	var $app_style$ = __webpack_require__(10)
+	var $app_script$ = __webpack_require__(11)
 	
 	$app_define$('@app-component/play', [], function($app_require$, $app_exports$, $app_module$){
 	     $app_script$($app_module$, $app_exports$, $app_require$)
@@ -68,16 +68,14 @@
 /* 2 */,
 /* 3 */,
 /* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Created by guoqingzhou on 16/12/22.
 	 * 公用方法
 	 */
-	var _ = __webpack_require__(8);
+	var _ = __webpack_require__(6);
 	(function () {
 	    var common = {
 	        api_uri: 'https://rc.vrs.sohu.com/56app/p',
@@ -339,7 +337,7 @@
 	})();
 
 /***/ },
-/* 8 */
+/* 6 */
 /***/ function(module, exports) {
 
 	/**
@@ -1870,9 +1868,9 @@
 	}).call(this);
 
 /***/ },
-/* 9 */,
-/* 10 */,
-/* 11 */
+/* 7 */,
+/* 8 */,
+/* 9 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -1974,21 +1972,20 @@
 	              ]
 	            },
 	            {
-	              "type": "text",
+	              "type": "div",
 	              "attr": {},
 	              "classList": [
-	                "more-arrow-wrapper"
+	                "share_area"
 	              ],
 	              "events": {
-	                "click": function (evt) {this.toggleBlock('',evt)}
+	                "click": function (evt) {this.shareText({title:this.video.video_name,cover:this.poster,playUrl:this.videosrc},evt)}
 	              },
 	              "children": [
 	                {
-	                  "type": "span",
+	                  "type": "image",
 	                  "attr": {
-	                    "value": "^"
-	                  },
-	                  "classList": function () {return ['more-arrow', this.showDesc?'':'more-arrow-hidden']}
+	                    "src": "../Common/images/share-ico.png"
+	                  }
 	                }
 	              ]
 	            }
@@ -2658,7 +2655,7 @@
 	}
 
 /***/ },
-/* 12 */
+/* 10 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -3068,6 +3065,64 @@
 	          "i": false,
 	          "a": "element",
 	          "v": "title"
+	        }
+	      ]
+	    }
+	  },
+	  ".header .share_area": {
+	    "marginRight": "24px",
+	    "alignItems": "center",
+	    "alignSelf": "flex-end",
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "header"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "share_area"
+	        }
+	      ]
+	    }
+	  },
+	  ".header .share_area image": {
+	    "width": "30px",
+	    "height": "30px",
+	    "_meta": {
+	      "ruleDef": [
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "header"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "a",
+	          "n": "class",
+	          "i": false,
+	          "a": "element",
+	          "v": "share_area"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "t",
+	          "n": "image"
 	        }
 	      ]
 	    }
@@ -4070,22 +4125,22 @@
 	}
 
 /***/ },
-/* 13 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function(module, exports, $app_require$){'use strict';
 	
 	var _data;
 	
-	var _underscore = __webpack_require__(8);
+	var _underscore = __webpack_require__(6);
 	
 	var _underscore2 = _interopRequireDefault(_underscore);
 	
-	var _common = __webpack_require__(7);
+	var _common = __webpack_require__(5);
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _wxDiscode = __webpack_require__(14);
+	var _wxDiscode = __webpack_require__(12);
 	
 	var _wxDiscode2 = _interopRequireDefault(_wxDiscode);
 	
@@ -4101,13 +4156,17 @@
 	
 	var _system6 = _interopRequireDefault(_system5);
 	
-	var _system7 = $app_require$('@app-module/system.device');
+	var _system7 = $app_require$('@app-module/system.share');
 	
 	var _system8 = _interopRequireDefault(_system7);
 	
-	var _system9 = $app_require$('@app-module/system.network');
+	var _system9 = $app_require$('@app-module/system.device');
 	
 	var _system10 = _interopRequireDefault(_system9);
+	
+	var _system11 = $app_require$('@app-module/system.network');
+	
+	var _system12 = _interopRequireDefault(_system11);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -4178,7 +4237,7 @@
 	    },
 	    getDeviceInfo: function getDeviceInfo() {
 	        var that = this;
-	        _system8.default.getInfo({
+	        _system10.default.getInfo({
 	            success: function success(ret) {
 	                that.deviceInfo = ret;
 	                var ratio = 750 / that.deviceInfo.screenWidth;
@@ -4210,7 +4269,7 @@
 	        me.aid = aid;
 	        me.getDeviceInfo();
 	
-	        _system10.default.getType({
+	        _system12.default.getType({
 	            success: function success(ret) {
 	                var networkType = ret;
 	                if (networkType['type'] !== 'wifi') {
@@ -4430,7 +4489,7 @@
 	    onShow: function onShow() {
 	        var me = this;
 	        if (me.isWIFI) {
-	            _system10.default.subscribe({
+	            _system12.default.subscribe({
 	                success: function success(res) {
 	                    var networkType = JSON.stringify(res).type;
 	                    if (networkType !== 'wifi') {
@@ -4592,9 +4651,24 @@
 	            me.getPgcUserInfo(uid);
 	        }
 	
-	        if (aid && Number(aid) > 0) {}
+	        if (aid && Number(aid) > 0) {
+	            me.getAlbumList(aid);
+	            me.getRecomList(aid);
+	        }
 	
 	        me.loadCommentFirst(vid);
+	    },
+	    shareText: function shareText(sharedata) {
+	        _system8.default.share({
+	            type: 'text/html',
+	            data: sharedata.title + sharedata.playUrl,
+	            success: function success(data) {
+	                console.log("分享成功");
+	            },
+	            fail: function fail(data, code) {
+	                console.log("handling fail, code=" + code);
+	            }
+	        });
 	    },
 	    routePush: function routePush(path, params) {
 	        this.refreshUrl(params);
@@ -4602,7 +4676,7 @@
 	};}
 
 /***/ },
-/* 14 */
+/* 12 */
 /***/ function(module, exports) {
 
 	// HTML 支持的数学符号

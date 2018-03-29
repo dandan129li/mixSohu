@@ -23,6 +23,12 @@
     },
     {
       "name": "system.network"
+    },
+    {
+      "name": "system.storage"
+    },
+    {
+      "name": "system.share"
     }
   ],
   "permissions": [

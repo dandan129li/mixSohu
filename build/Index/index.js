@@ -47,9 +47,9 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var $app_template$ = __webpack_require__(4)
-	var $app_style$ = __webpack_require__(5)
-	var $app_script$ = __webpack_require__(6)
+	var $app_template$ = __webpack_require__(2)
+	var $app_style$ = __webpack_require__(3)
+	var $app_script$ = __webpack_require__(4)
 	
 	$app_define$('@app-component/index', [], function($app_require$, $app_exports$, $app_module$){
 	     $app_script$($app_module$, $app_exports$, $app_require$)
@@ -65,9 +65,7 @@
 
 /***/ },
 /* 1 */,
-/* 2 */,
-/* 3 */,
-/* 4 */
+/* 2 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -172,127 +170,141 @@
 	                  ]
 	                },
 	                {
-	                  "type": "list",
+	                  "type": "refresh",
 	                  "attr": {
-	                    "scrollpage": function () {return this.scrollPage}
+	                    "refreshing": function () {return this.isRefreshing}
 	                  },
 	                  "classList": [
-	                    "section"
+	                    "refresh"
 	                  ],
 	                  "events": {
-	                    "scrollbottom": "onReachBottom"
+	                    "refresh": "refresh"
 	                  },
-	                  "shown": function () {return this.$item.channel_id==this.currentChannelId&&this.playList.length>0},
 	                  "children": [
 	                    {
-	                      "type": "list-item",
+	                      "type": "list",
 	                      "attr": {
-	                        "type": "listItem",
-	                        "id": function () {return this.$item.vid}
+	                        "scrollpage": function () {return this.scrollPage}
 	                      },
-	                      "id": function () {return this.$item.vid},
-	                      "repeat": function () {return this.playList},
 	                      "classList": [
-	                        "play-list"
+	                        "section"
 	                      ],
+	                      "events": {
+	                        "scrollbottom": "onReachBottom"
+	                      },
+	                      "shown": function () {return this.$item.channel_id==this.currentChannelId&&this.playList.length>0},
 	                      "children": [
 	                        {
-	                          "type": "stack",
-	                          "attr": {},
+	                          "type": "list-item",
+	                          "attr": {
+	                            "type": "listItem",
+	                            "id": function () {return this.$item.vid}
+	                          },
+	                          "id": function () {return this.$item.vid},
+	                          "repeat": function () {return this.playList},
+	                          "classList": [
+	                            "play-list"
+	                          ],
 	                          "children": [
 	                            {
-	                              "type": "block",
+	                              "type": "stack",
 	                              "attr": {},
-	                              "shown": function () {return this.$idx!==this.currPlayIndex},
 	                              "children": [
 	                                {
-	                                  "type": "div",
-	                                  "attr": {
-	                                    "id": function () {return this.$item.vid}
-	                                  },
-	                                  "classList": [
-	                                    "player-container"
-	                                  ],
-	                                  "id": function () {return this.$item.vid},
+	                                  "type": "block",
+	                                  "attr": {},
+	                                  "shown": function () {return this.$idx!==this.currPlayIndex},
 	                                  "children": [
 	                                    {
 	                                      "type": "div",
-	                                      "attr": {},
-	                                      "classList": [
-	                                        "v-cover-container"
-	                                      ],
-	                                      "events": {
-	                                        "click": function (evt) {this.play({vid:this.$item.vid,site:this.$item.site,index:this.$idx},evt)}
+	                                      "attr": {
+	                                        "id": function () {return this.$item.vid}
 	                                      },
+	                                      "classList": [
+	                                        "player-container"
+	                                      ],
+	                                      "id": function () {return this.$item.vid},
 	                                      "children": [
 	                                        {
-	                                          "type": "stack",
+	                                          "type": "div",
 	                                          "attr": {},
+	                                          "classList": [
+	                                            "v-cover-container"
+	                                          ],
+	                                          "events": {
+	                                            "click": function (evt) {this.play({vid:this.$item.vid,site:this.$item.site,index:this.$idx},evt)}
+	                                          },
 	                                          "children": [
 	                                            {
-	                                              "type": "image",
-	                                              "attr": {
-	                                                "src": function () {return this.$item.cover}
-	                                              },
-	                                              "classList": [
-	                                                "v-cover"
-	                                              ],
-	                                              "style": {
-	                                                "resizeMode": "contain"
-	                                              }
-	                                            },
-	                                            {
-	                                              "type": "div",
+	                                              "type": "stack",
 	                                              "attr": {},
-	                                              "classList": [
-	                                                "v-mask"
-	                                              ]
-	                                            },
-	                                            {
-	                                              "type": "div",
-	                                              "attr": {},
-	                                              "classList": [
-	                                                "v-title"
-	                                              ],
-	                                              "children": [
-	                                                {
-	                                                  "type": "text",
-	                                                  "attr": {
-	                                                    "value": function () {return this.$item.video_name}
-	                                                  }
-	                                                }
-	                                              ]
-	                                            },
-	                                            {
-	                                              "type": "div",
-	                                              "attr": {},
-	                                              "classList": [
-	                                                "v-play-btn"
-	                                              ],
 	                                              "children": [
 	                                                {
 	                                                  "type": "image",
 	                                                  "attr": {
-	                                                    "src": "../Common/images/play-ico.png"
+	                                                    "src": function () {return this.$item.cover}
 	                                                  },
 	                                                  "classList": [
-	                                                    "v-btn"
-	                                                  ]
-	                                                }
-	                                              ]
-	                                            },
-	                                            {
-	                                              "type": "div",
-	                                              "attr": {},
-	                                              "classList": [
-	                                                "v-info"
-	                                              ],
-	                                              "children": [
-	                                                {
-	                                                  "type": "text",
-	                                                  "attr": {
-	                                                    "value": function () {return (this.$item.play_count_short) + '播放 | ' + (this.$item.time_length_format)}
+	                                                    "v-cover"
+	                                                  ],
+	                                                  "style": {
+	                                                    "resizeMode": "contain"
 	                                                  }
+	                                                },
+	                                                {
+	                                                  "type": "div",
+	                                                  "attr": {},
+	                                                  "classList": [
+	                                                    "v-mask"
+	                                                  ]
+	                                                },
+	                                                {
+	                                                  "type": "div",
+	                                                  "attr": {},
+	                                                  "classList": [
+	                                                    "v-title"
+	                                                  ],
+	                                                  "children": [
+	                                                    {
+	                                                      "type": "text",
+	                                                      "attr": {
+	                                                        "value": function () {return this.$item.video_name}
+	                                                      }
+	                                                    }
+	                                                  ]
+	                                                },
+	                                                {
+	                                                  "type": "div",
+	                                                  "attr": {},
+	                                                  "classList": [
+	                                                    "v-play-btn"
+	                                                  ],
+	                                                  "children": [
+	                                                    {
+	                                                      "type": "image",
+	                                                      "attr": {
+	                                                        "src": "../Common/images/play-ico.png"
+	                                                      },
+	                                                      "classList": [
+	                                                        "v-btn"
+	                                                      ]
+	                                                    }
+	                                                  ]
+	                                                },
+	                                                {
+	                                                  "type": "div",
+	                                                  "attr": {},
+	                                                  "classList": [
+	                                                    "v-info"
+	                                                  ],
+	                                                  "children": [
+	                                                    {
+	                                                      "type": "text",
+	                                                      "attr": {
+	                                                        "value": function () {return (this.$item.play_count_short) + '播放 | ' + (this.$item.time_length_format)}
+	                                                      }
+	                                                    }
+	                                                  ]
 	                                                }
 	                                              ]
 	                                            }
@@ -301,115 +313,133 @@
 	                                      ]
 	                                    }
 	                                  ]
+	                                },
+	                                {
+	                                  "type": "div",
+	                                  "attr": {
+	                                    "id": "playerBox"
+	                                  },
+	                                  "classList": [
+	                                    "player"
+	                                  ],
+	                                  "id": "playerBox",
+	                                  "style": {
+	                                    "height": "422px"
+	                                  },
+	                                  "children": [
+	                                    {
+	                                      "type": "video",
+	                                      "attr": {
+	                                        "id": "player",
+	                                        "src": function () {return this.currPlayUrl},
+	                                        "autoplay": function () {return this.isWIFI},
+	                                        "poster": "https://photocdn.tv.sohu.com/img/20180302/pic_compress_2d4e7934-f71a-411c-a404-0a1d326f42e5_q_mini.png"
+	                                      },
+	                                      "id": "player",
+	                                      "shown": function () {return this.$idx===this.currPlayIndex&&this.currPlayUrl!==''}
+	                                    }
+	                                  ]
 	                                }
 	                              ]
 	                            },
 	                            {
 	                              "type": "div",
-	                              "attr": {
-	                                "id": "playerBox"
-	                              },
-	                              "classList": [
-	                                "player"
-	                              ],
-	                              "id": "playerBox",
-	                              "style": {
-	                                "height": "422px"
-	                              },
-	                              "children": [
-	                                {
-	                                  "type": "video",
-	                                  "attr": {
-	                                    "id": "player",
-	                                    "src": function () {return this.currPlayUrl},
-	                                    "autoplay": function () {return this.isWIFI},
-	                                    "poster": "https://photocdn.tv.sohu.com/img/20180302/pic_compress_2d4e7934-f71a-411c-a404-0a1d326f42e5_q_mini.png"
-	                                  },
-	                                  "id": "player",
-	                                  "shown": function () {return this.$idx===this.currPlayIndex&&this.currPlayUrl!==''}
-	                                }
-	                              ]
-	                            }
-	                          ]
-	                        },
-	                        {
-	                          "type": "div",
-	                          "attr": {},
-	                          "classList": [
-	                            "v-opt-container",
-	                            "cf"
-	                          ],
-	                          "children": [
-	                            {
-	                              "type": "div",
 	                              "attr": {},
 	                              "classList": [
-	                                "v-user"
+	                                "v-opt-container",
+	                                "cf"
 	                              ],
 	                              "children": [
 	                                {
-	                                  "type": "image",
-	                                  "attr": {
-	                                    "src": function () {return this.$item.header}
-	                                  },
+	                                  "type": "div",
+	                                  "attr": {},
 	                                  "classList": [
-	                                    "v-user-avatar"
+	                                    "v-user"
+	                                  ],
+	                                  "children": [
+	                                    {
+	                                      "type": "image",
+	                                      "attr": {
+	                                        "src": function () {return this.$item.header}
+	                                      },
+	                                      "classList": [
+	                                        "v-user-avatar"
+	                                      ]
+	                                    },
+	                                    {
+	                                      "type": "text",
+	                                      "attr": {
+	                                        "value": function () {return this.$item.userName}
+	                                      },
+	                                      "shown": function () {return this.$item.header!=undefined},
+	                                      "classList": [
+	                                        "v-user-name"
+	                                      ]
+	                                    }
 	                                  ]
 	                                },
 	                                {
-	                                  "type": "text",
-	                                  "attr": {
-	                                    "value": function () {return this.$item.userName}
-	                                  },
-	                                  "shown": function () {return this.$item.header!=undefined},
+	                                  "type": "div",
+	                                  "attr": {},
 	                                  "classList": [
-	                                    "v-user-name"
+	                                    "like-wrap"
+	                                  ]
+	                                },
+	                                {
+	                                  "type": "div",
+	                                  "attr": {},
+	                                  "classList": [
+	                                    "link-to-playpage"
+	                                  ],
+	                                  "events": {
+	                                    "click": function (evt) {this.routePush('Play',{vid:this.$item.vid,site:this.$item.site,aid:this.$item.aid,user_id:this.$item.user_id},evt)}
+	                                  }
+	                                },
+	                                {
+	                                  "type": "div",
+	                                  "attr": {},
+	                                  "classList": [
+	                                    "share_area"
+	                                  ],
+	                                  "events": {
+	                                    "click": function (evt) {this.shareText({title:this.$item.video_name,cover:this.$item.cover,playUrl:this.$item.play_url},evt)}
+	                                  },
+	                                  "children": [
+	                                    {
+	                                      "type": "image",
+	                                      "attr": {
+	                                        "src": "../Common/images/share-ico.png"
+	                                      }
+	                                    }
 	                                  ]
 	                                }
 	                              ]
+	                            }
+	                          ]
+	                        },
+	                        {
+	                          "type": "list-item",
+	                          "attr": {
+	                            "type": "loadMore"
+	                          },
+	                          "classList": [
+	                            "load-more"
+	                          ],
+	                          "shown": function () {return this.loadingMore},
+	                          "children": [
+	                            {
+	                              "type": "progress",
+	                              "attr": {
+	                                "type": "circular"
+	                              }
 	                            },
 	                            {
-	                              "type": "div",
-	                              "attr": {},
-	                              "classList": [
-	                                "like-wrap"
-	                              ]
-	                            },
-	                            {
-	                              "type": "div",
-	                              "attr": {},
-	                              "classList": [
-	                                "link-to-playpage"
-	                              ],
-	                              "events": {
-	                                "click": function (evt) {this.routePush('Play',{vid:this.$item.vid,site:this.$item.site,aid:this.$item.aid,user_id:this.$item.user_id},evt)}
+	                              "type": "text",
+	                              "attr": {
+	                                "value": "加载更多"
 	                              }
 	                            }
 	                          ]
-	                        }
-	                      ]
-	                    },
-	                    {
-	                      "type": "list-item",
-	                      "attr": {
-	                        "type": "loadMore"
-	                      },
-	                      "classList": [
-	                        "load-more"
-	                      ],
-	                      "shown": function () {return this.loadingMore},
-	                      "children": [
-	                        {
-	                          "type": "progress",
-	                          "attr": {
-	                            "type": "circular"
-	                          }
-	                        },
-	                        {
-	                          "type": "text",
-	                          "attr": {
-	                            "value": "加载更多"
-	                          }
 	                        }
 	                      ]
 	                    }
@@ -425,7 +455,7 @@
 	}
 
 /***/ },
-/* 5 */
+/* 3 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -816,9 +846,7 @@
 	          "v": "share-text"
 	        }
 	      ]
-	    },
-	    "alignItems": "center",
-	    "lineHeight": "40px"
+	    }
 	  },
 	  ".v-opt-container .share-wxfriend": {
 	    "marginTop": "0px",
@@ -1049,13 +1077,10 @@
 	      ]
 	    }
 	  },
-	  ".v-opt-container .share-wrap": {
-	    "height": "40px",
-	    "marginRight": "29px",
-	    "paddingTop": "22px",
-	    "paddingRight": "0px",
-	    "paddingBottom": "32px",
-	    "paddingLeft": "0px",
+	  ".v-opt-container .share_area": {
+	    "marginRight": "24px",
+	    "alignItems": "center",
+	    "alignSelf": "flex-end",
 	    "_meta": {
 	      "ruleDef": [
 	        {
@@ -1073,13 +1098,14 @@
 	          "n": "class",
 	          "i": false,
 	          "a": "element",
-	          "v": "share-wrap"
+	          "v": "share_area"
 	        }
 	      ]
 	    }
 	  },
-	  ".v-opt-container .share-close": {
-	    "height": "40px",
+	  ".v-opt-container .share_area image": {
+	    "width": "30px",
+	    "height": "30px",
 	    "_meta": {
 	      "ruleDef": [
 	        {
@@ -1097,7 +1123,14 @@
 	          "n": "class",
 	          "i": false,
 	          "a": "element",
-	          "v": "share-close"
+	          "v": "share_area"
+	        },
+	        {
+	          "t": "d"
+	        },
+	        {
+	          "t": "t",
+	          "n": "image"
 	        }
 	      ]
 	    }
@@ -1121,20 +1154,20 @@
 	}
 
 /***/ },
-/* 6 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function(module, exports, $app_require$){'use strict';
 	
-	var _common = __webpack_require__(7);
+	var _common = __webpack_require__(5);
 	
 	var _common2 = _interopRequireDefault(_common);
 	
-	var _util = __webpack_require__(9);
+	var _util = __webpack_require__(7);
 	
 	var _util2 = _interopRequireDefault(_util);
 	
-	var _playInfo = __webpack_require__(10);
+	var _playInfo = __webpack_require__(8);
 	
 	var _playInfo2 = _interopRequireDefault(_playInfo);
 	
@@ -1153,6 +1186,10 @@
 	var _system7 = $app_require$('@app-module/system.network');
 	
 	var _system8 = _interopRequireDefault(_system7);
+	
+	var _system9 = $app_require$('@app-module/system.share');
+	
+	var _system10 = _interopRequireDefault(_system9);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -1448,7 +1485,6 @@
 	      self.likeList = _likeList;
 	    }
 	  },
-	
 	  playError: function playError(e) {
 	    console.log('error:' + e);
 	  },
@@ -1503,6 +1539,18 @@
 	    this.currPlayIndex = '';
 	    this.chlData('fresh');
 	  },
+	  shareText: function shareText(sharedata) {
+	    _system10.default.share({
+	      type: 'text/html',
+	      data: sharedata.title + sharedata.playUrl,
+	      success: function success(data) {
+	        console.log("分享成功");
+	      },
+	      fail: function fail(data, code) {
+	        console.log("handling fail, code=" + code);
+	      }
+	    });
+	  },
 	  routePush: function routePush(path, params) {
 	    console.log(JSON.stringify(params));
 	
@@ -1514,14 +1562,14 @@
 	};}
 
 /***/ },
-/* 7 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Created by guoqingzhou on 16/12/22.
 	 * 公用方法
 	 */
-	var _ = __webpack_require__(8);
+	var _ = __webpack_require__(6);
 	(function () {
 	    var common = {
 	        api_uri: 'https://rc.vrs.sohu.com/56app/p',
@@ -1783,7 +1831,7 @@
 	})();
 
 /***/ },
-/* 8 */
+/* 6 */
 /***/ function(module, exports) {
 
 	/**
@@ -3314,10 +3362,10 @@
 	}).call(this);
 
 /***/ },
-/* 9 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var common = __webpack_require__(7);
+	var common = __webpack_require__(5);
 	var fetch = $app_require$( '@app-module/system.fetch');;
 	var device = $app_require$( '@app-module/system.device');;
 	module.exports = {
@@ -3365,7 +3413,7 @@
 	};
 
 /***/ },
-/* 10 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3386,10 +3434,10 @@
 	    return url;
 	  }
 	};
-	var _ = __webpack_require__(8);
+	var _ = __webpack_require__(6);
 	var fetch = $app_require$( '@app-module/system.fetch');;
 	var prompt = $app_require$( '@app-module/system.prompt');;
-	var Futil = __webpack_require__(9);
+	var Futil = __webpack_require__(7);
 	var gData = Futil.data;
 	module.exports = {
 	  video: {},
