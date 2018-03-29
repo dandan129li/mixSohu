@@ -5,8 +5,13 @@ import prompt from '@system.prompt'
 import fetch from '@system.fetch'
 import router from '@system.router'
 import network from '@system.network'
+<<<<<<< HEAD
 import share from '@system.share'
 
+=======
+import storage from '@system.storage'
+import share from '@system.share'
+>>>>>>> 8ef37b41cb5504a74296cb0cd1610e3b6fe210f7
 var video_blank_img = "https://m.tv.sohu.com/upload/touch/img/blank_h5.png?v=1";
 var gData=Futil.data;
 module.exports = {
@@ -15,6 +20,7 @@ module.exports = {
         scrollLeft: 0,
         channelList:[],
         currentChannelId:0,
+        currentIndex:0,
         playList:[],
         queryData:{},
         isRefreshing: false,
@@ -33,7 +39,17 @@ module.exports = {
         options:{}
     },
     onInit: function () {
+      // storage.clear({
+      //   success:function(data){console.log("clear   handling success");},
+      //   fail: function(data, code) {
+      //     console.log("clear   handling fail, code=" + code);
+      //   }
+      // })
         var self =this;
+        self.chlList();
+        // self.storageGet("channelList",function(){
+        //     self.chlList();
+        // })
         var channel_id = self.options && self.options.channel_id ||self.channel_id|| self.currentChannelId||0;
         self.options={
           channel_id:channel_id
@@ -42,7 +58,6 @@ module.exports = {
         network.getType({
           success: (ret) => {
             var networkType = ret
-            console.log(JSON.stringify(networkType))
               if (networkType['type'] !== 'wifi') {
                   self.isWIFI=false;
                   setTimeout(function () {
@@ -62,8 +77,11 @@ module.exports = {
     },
     onReady: function () {
         var self =this;
-        self.chlList();
-        self.chlData('fresh');
+        // self.chlData('fresh');
+        // self.storageGet("playList"+self.currentIndex,function(){
+        //   self.chlData('fresh');
+        // })
+
     },
     //频道一级菜单
     chlList:function(){
@@ -76,6 +94,9 @@ module.exports = {
               var channelList = self.buildTopNav(rst.data.cateCodes, self.currentChannelId);
               self.scrollLeft=0;
               self.channelList=channelList;
+              self.storageDelete("channelList",function(){
+                self.storageSet("channelList",self.channelList)
+              })
             }
           },
           fail: function () {
@@ -85,28 +106,99 @@ module.exports = {
           }
       });
     },
+    storageSet:function(name,list){
+      var self=this;
+      storage.set({
+        key:name,
+        value: list,
+        success:function(data){console.log("set:"+name+':length:'+list.length);},
+        fail: function(data, code) {
+          console.log("handling fail, code=" + code);
+        }
+      });
+    },
+    storageGet:function(name,index,callback,callback2){
+      console.log('get storage')
+      var self=this;
+      storage.get({
+        key:name,
+        success:function(data){
+          if(name==='playList'){
+            if(data){
+              self.playList=JSON.parse(data);
+            }
+            if(!self.playList[index]||self.playList[index].length<1){
+              callback&&callback();
+            }else{
+              callback2&&callback2();
+            }
+          }else if(name=='channelList'){
+              if(data){
+                self.channelList=JSON.parse(data);
+              }
+              console.log(name+'storageGet*length**'+self.channelList.length);
+              if(!self.channelList||self.channelList.length<1){
+                callback&&callback();
+              }
+          }else{
+            var indx=name.split('playList')[1];
+            if(data){
+              self.playList[indx]=JSON.parse(data);
+            }
+            console.log(name+'get*length**'+self.playList[indx].length);
+            if(!self.playList[indx]||self.playList[indx].length<1){
+              callback&&callback();
+            }else{
+              callback2&&callback2();
+            }
+          }
+
+        },
+        fail: function(data, code) {
+          callback&&callback();
+          console.log("handling fail, code=" + code);
+        }
+      });
+    },
+    storageDelete:function(name,callback){
+      var self=this;
+      storage.delete({
+        key:name,
+        success:function(data){
+            callback&&callback();
+            console.log(name+"storageDelete success=");
+        },
+        fail: function(data, code) {
+          callback&&callback();
+          console.log(name+"storageDelete fail, code=" + code);
+        }
+      });
+    },
     //频道页面数据
     chlData:function(act){
       var self =this;
-      // if(act=='fresh'){
-      //    self.playList=[];
-      // }
       fetch.fetch({
         url: common.api_uri + '/channel/' + self.options.channel_id +'/'+ gData.uid +'/rc/v1?passport='+gData.passport+'&flat=6&isH5=1',
           callback:function (rst) {
+            console.log(common.api_uri + '/channel/' + self.options.channel_id +'/'+ gData.uid +'/rc/v1?passport='+gData.passport+'&flat=6&isH5=1')
               var rst=JSON.parse(rst.data);
               if(rst && rst.data && rst.data.columns){
                 var playList = [];
                 var orgList =[];
                 if(act=='more'){
-                   orgList = self.playList;
+                   orgList = self.playList[self.currentIndex];
+                }else{
+                  orgList =[];
                 }
                 var page = self.page;
                 self.buildColumns(rst.data.columns, function(playList){
                   playList = orgList.concat(playList);
                   page++;
                   self.loadingMore=false;
-                  self.playList=playList;
+                  self.playList[self.currentIndex]=playList;
+                  // self.storageDelete("playList",function(){
+                  //   self.storageSet("playList",self.playList);
+                  // })
                   self.page=page;
                   if (page == 0 && self.isWIFI){
                     // self.playVideo(playList[0].vid, playList[0].site,0);
@@ -153,7 +245,9 @@ module.exports = {
         var chlList = chlList || [];
         // var filter=[71270000,71200000];
         var pos=1;
+        var _playList=[];
         for(var i = 0; i < chlList.length; i++) {
+          _playList.push([])
             var chlInfo = chlList[i];
             var channel_id = chlInfo["channel_id"];
             chlInfo.active="";
@@ -164,11 +258,13 @@ module.exports = {
             }
                 tags.push(chlInfo);
         }
+        self.playList=_playList;
+        console.log('************'+_playList.length)
         return tags;
     },
     getVideoLikeNum: function(vids,callback){
       fetch.fetch({
-        url: 'https://score.my.tv.sohu.com/digg/get/v2.do?callback=?vids='+vids.join(',')+'type=9001&isH5=1',
+        url: 'https://score.my.tv.sohu.com/digg/get/v2.do?callback=&vids='+vids.join(',')+'&type=9001&isH5=1',
         dataType: 'json',
         method: 'GET',
         timeout: 3000,
@@ -176,9 +272,10 @@ module.exports = {
           'content-type': 'application/json'
         },
         success: function(rst){
+          var rst=JSON.parse(rst.data)
           var resultList;
-          if (rst.data.status==200){
-            resultList = rst.data.message || [];
+          if (rst.status==200){
+            resultList = rst.message || [];
             callback && callback(resultList);
           }
         }
@@ -210,37 +307,35 @@ module.exports = {
                   if (obj.vid) {
                       playList.push(obj);
                   }
-                  callback&&callback(playList);
                 }
             }catch (e){
             }
         }
+        callback&&callback(playList);
         this.getVideoLikeNum(vids,function(likeList){
           var i,item,len = likeList.length || 0;
-          var _likeList = self.likeList;
+          var _likeList = self.likeList||{};
           for(i=0;i<len;i++){
               item = likeList[i] || {};
-              _likeList[item.vid] = {};
-              _likeList[item.vid].likeNum = item.upCount;
-              _likeList[item.vid].isLiked = false;
+              _likeList[item.vid] = {
+                likeNum : item.upCount,
+                isLiked : false
+              };
+              // _likeList[item.vid]=item.upCount;
           }
           self.likeList=_likeList;
-          callback && callback(playList);
+          // console.log('likelist:'+JSON.stringify(self.likeList))
         });
     },
     playVideo:function(vid,site,index){
-      var url = '',me = this;
-      var i=0,playList = me.playList;
+      var url = '',self = this;
+      var i=0,playList = self.playList[self.currentIndex];
       if(playList[index].playUrl == undefined){
         playInfo.getPlayInfo(vid, site, function (rst) {
           playList[index].playUrl = rst;
-          // me.$set(me.currPlayIndex, index);
-          me.playList = playList;
-          me.currPlayIndex = index;
-          me.currPlayUrl = rst;
-          // if (me.videoContext === undefined) {
-            // me.videoContext =  me.$element('player');
-          // }
+          self.playList[self.currentIndex] = playList;
+          self.currPlayIndex = index;
+          self.currPlayUrl = rst;
         }, function () {
           prompt.showToast({
             title: '提示',
@@ -248,9 +343,9 @@ module.exports = {
           })
         });
       }else{
-        me.playList = playList;
-        me.currPlayIndex = index;
-        me.currPlayUrl = playList[index].playUrl;
+        self.playList[self.currentIndex] = playList;
+        self.currPlayIndex = index;
+        self.currPlayUrl = playList[index].playUrl;
       }
     },
     play: function (dataset) {
@@ -262,19 +357,17 @@ module.exports = {
     },
     playNext: function(event){
       console.log('playNext')
-      return false;
       var nextIndex = ++this.currPlayIndex;
-      if(nextIndex >= this.playList.length){
+      if(nextIndex >= this.playList[self.currentIndex].length){
         return;
       }
-      var nextVideo = this.playList[nextIndex];
+      var nextVideo = this.playList[self.currentIndex][nextIndex];
       var nextVid = nextVideo.vid;
       var nextSite = nextVideo.site;
-      this.videoContext && this.videoContext.pause();
+      this.currPlayIndex = nextIndex;
       this.playVideo(nextVid,nextSite,nextIndex);
     },
-    like : function(event){
-      var dataset = event.currentTarget.dataset;
+    like : function(dataset){
       var vid = dataset.vid;
       var _likeNum = dataset.likenum || 0;
       var self = this;
@@ -284,7 +377,7 @@ module.exports = {
       var isUp = (_isLike && _isLike === 'true') ? false : true;
       if(isUp === true){
         fetch.fetch({
-          url: 'https://score.my.tv.sohu.com/digg/up/v2.do?callback=?vid='+vid+'&type=9001&from=&isUp=56-weixin'+isUp,
+          url: 'https://score.my.tv.sohu.com/digg/up/v2.do?callback=&vid='+vid+'&type=9001&from=&isUp=56-weixin'+isUp,
           dataType: 'json',
           method: 'GET',
           timeout: 3000,
@@ -350,15 +443,22 @@ module.exports = {
       }
     },
     changeTabactive: function (e) {
+      var self=this;
       // 切换tab
       console.log('----------切换tab: ' + e.index);
       console.log('----------channel_id: ' +this.options.channel_id);
-      if(e.index==0&&this.options.channel_id==0){return false;}
-      // this.playList=[];
+      self.currentIndex=e.index;
+      // this.playList[self.currentIndex]=[];
       this.options.channel_id=this.channelList&&this.channelList[e.index].channel_id;
       this.currentChannelId=this.options.channel_id;
       this.currPlayIndex='';
-      this.chlData('fresh');
+      // if(!(e.index==0&&this.options.channel_id==0)){return false;}
+      self.chlData('fresh');
+      // self.storageGet("playList",self.currentIndex,function(){
+      //   self.chlData('fresh');
+      // },function(){
+      //   console.log("!!fresh!!!!!"+JSON.stringify(self.playList.length))
+      // })
     },
     shareText: function (sharedata) {
       share.share({
@@ -379,5 +479,17 @@ module.exports = {
        uri:path,
         params: params
       })
+    },
+    shareText: function (sharedata) {
+      share.share({
+        type: 'text/html',
+        data:sharedata.title+sharedata.playUrl,
+        success:function(data){
+          console.log("分享成功");
+        },
+        fail: function(data, code) {
+          console.log("handling fail, code=" + code);
+        }
+      });
     }
 }

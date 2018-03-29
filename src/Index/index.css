@@ -67,25 +67,31 @@ tab-bar{
   font-size: 24px;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  margin:20px 0;
 }
 .v-opt-container .v-user{
   margin-left: 24px;
-  padding: 22px 0 32px;
+  /* padding: 22px 0 32px; */
+  align-items: center;
 }
 .v-opt-container .v-user .v-user-avatar{
   width: 40px;
   height: 40px;
   border-radius: 20px;
-  align-items:center;
 }
 .v-opt-container .v-user .v-user-name{
   font-size: 24px;
   color : #545454;
   margin-left: 12px;
-  align-items:center;
   line-height: 40px;
+  flex-wrap: nowrap;
+  lines:1;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8ef37b41cb5504a74296cb0cd1610e3b6fe210f7
 .v-opt-container .share_area {
 margin-right: 24px;
 align-items: center;
@@ -94,7 +100,29 @@ align-self: flex-end;
 .v-opt-container .share_area image{
 width: 30px;
 height: 30px;
+<<<<<<< HEAD
+=======
 }
+.v-opt-container .like-wrap {
+align-items: center;
+flex-direction: row;
+}
+.v-opt-container .like-wrap image{
+width: 32px;
+height: 30px;
+>>>>>>> 8ef37b41cb5504a74296cb0cd1610e3b6fe210f7
+}
+.v-opt-container .like-wrap .like-num {
+font-size:18px;
+margin-top: -20px;
+margin-left: -8px;
+}
+.link-to-playpage{
+  width: 25%;
+  /* flex-basis:auto; */
+  /* border:1px solid #000000; */
+}
+
 .item-container{
   flex-direction: column;
 }

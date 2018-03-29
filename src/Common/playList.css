@@ -69,37 +69,7 @@
   font-size: 24px;
   color : #ffffff;
 }
-.v-opt-container .like-wrap {
-width:30px;
-height:30px;
-margin-left:29px;
-  margin-top: 30px;
-}
-.link-to-playpage{
-  /* border:2px solid #000000; */
-  width: 30%;
-}
-.v-opt-container .like-wrap .like_num{
-  top: -5px;
-  left: 25px;
-  font-size: 18px;
-}
-.v-opt-container .liked .like_num{
-  color: #e63737;
-}
-.v-opt-container .share-wrap{
-}
 
-.v-opt-container .share-text{
-  color: #545454;
-}
-.v-opt-container .share-wxfriend{
-  margin: 0;
-  padding: 0;
-  height: 40px;
-  width: 40px;
-  margin-left: 37px;
-}
 .play-v-name{
   width: 702px;
   font-size: 36px;

@@ -5,9 +5,13 @@
     <text class="item-title">正在努力加载中······</text>
   </div>
     <div class="player" id="playerBox" style="height: {{playHeight}}px" if="{{videoLoaded}}" >
+    <stack>
       <video id="player" src="{{videosrc}}" poster="{{poster}}" autoplay="{{isWIFI}}"  ></video>
       <text class="wifi-tip" if="{{showNoneWifiWarning}}">您正在使用非wifi网络，播放将产生流量费用</text>
+      <image class="video_back" src="../Common/images/like-ico.png"></image>
+      </stack>
     </div>
+
     <div if="{{videoLoaded}}" class="no-player"  style="width:100%;">
     <!--标题 详情-->
       <div class="header">
