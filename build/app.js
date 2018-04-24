@@ -68,7 +68,7 @@
 	module.exports = function(module, exports, $app_require$){"use strict";
 	
 	module.exports = {};
-	(exports.default || module.exports).manifest = {"package":"com.application.demo","name":"mixSohu","versionName":"1.0.0","versionCode":"1","minPlatformVersion":"101","icon":"/Common/logo.png","features":[{"name":"system.prompt"},{"name":"system.router"},{"name":"system.shortcut"},{"name":"system.fetch"},{"name":"system.device"},{"name":"system.network"},{"name":"system.share"},{"name":"system.storage"}],"permissions":[{"origin":"*"}],"config":{"logLevel":"debug"},"router":{"entry":"Index","pages":{"Index":{"component":"index"},"Demo":{"component":"index"},"Play":{"component":"play","path":"/play"}}},"display":{"titleBarBackgroundColor":"#f2f2f2","titleBarTextColor":"#414141","menu":false,"fullScreen":true,"titleBar":false,"pages":{"Play":{"fullScreen":true,"titleBar":false}}}};
+	(exports.default || module.exports).manifest = {"package":"com.sohu.module","name":"搜狐视频","versionName":"1.0.0","versionCode":"1","minPlatformVersion":"101","icon":"/Common/logoB.png","features":[{"name":"system.prompt"},{"name":"system.router"},{"name":"system.shortcut"},{"name":"system.fetch"},{"name":"system.device"},{"name":"system.share"},{"name":"system.network"}],"permissions":[{"origin":"*"}],"config":{"logLevel":"debug"},"router":{"entry":"Index","pages":{"Index":{"component":"index"},"Demo":{"component":"index"},"Play":{"component":"play","path":"/play"}}},"display":{"titleBarBackgroundColor":"#f2f2f2","titleBarTextColor":"#414141","menu":false,"fullScreen":true,"titleBar":false}};
 	}
 
 /***/ }
@@ -81,7 +81,7 @@
   else {
     window.createAppHandler = createAppHandler
     // H5注入manifest以获取features
-    global.manifest = {"package":"com.application.demo","name":"mixSohu","versionName":"1.0.0","versionCode":"1","minPlatformVersion":"101","icon":"/Common/logo.png","features":[{"name":"system.prompt"},{"name":"system.router"},{"name":"system.shortcut"},{"name":"system.fetch"},{"name":"system.device"},{"name":"system.network"},{"name":"system.share"},{"name":"system.storage"}],"permissions":[{"origin":"*"}],"config":{"logLevel":"debug"},"router":{"entry":"Index","pages":{"Index":{"component":"index"},"Demo":{"component":"index"},"Play":{"component":"play","path":"/play"}}},"display":{"titleBarBackgroundColor":"#f2f2f2","titleBarTextColor":"#414141","menu":false,"fullScreen":true,"titleBar":false,"pages":{"Play":{"fullScreen":true,"titleBar":false}}}};
+    global.manifest = {"package":"com.sohu.module","name":"搜狐视频","versionName":"1.0.0","versionCode":"1","minPlatformVersion":"101","icon":"/Common/logoB.png","features":[{"name":"system.prompt"},{"name":"system.router"},{"name":"system.shortcut"},{"name":"system.fetch"},{"name":"system.device"},{"name":"system.share"},{"name":"system.network"}],"permissions":[{"origin":"*"}],"config":{"logLevel":"debug"},"router":{"entry":"Index","pages":{"Index":{"component":"index"},"Demo":{"component":"index"},"Play":{"component":"play","path":"/play"}}},"display":{"titleBarBackgroundColor":"#f2f2f2","titleBarTextColor":"#414141","menu":false,"fullScreen":true,"titleBar":false}};
   }
 })();
 //# sourceMappingURL=app.js.map

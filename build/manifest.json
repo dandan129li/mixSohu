@@ -1,10 +1,10 @@
 {
-  "package": "com.application.demo",
-  "name": "mixSohu",
+  "package": "com.sohu.module",
+  "name": "搜狐视频",
   "versionName": "1.0.0",
   "versionCode": "1",
   "minPlatformVersion": "101",
-  "icon": "/Common/logo.png",
+  "icon": "/Common/logoB.png",
   "features": [
     {
       "name": "system.prompt"
@@ -22,13 +22,10 @@
       "name": "system.device"
     },
     {
-      "name": "system.network"
-    },
-    {
       "name": "system.share"
     },
     {
-      "name": "system.storage"
+      "name": "system.network"
     }
   ],
   "permissions": [
@@ -59,12 +56,6 @@
     "titleBarTextColor": "#414141",
     "menu": false,
     "fullScreen": true,
-    "titleBar": false,
-    "pages": {
-      "Play": {
-        "fullScreen": true,
-        "titleBar": false
-      }
-    }
+    "titleBar": false
   }
 }

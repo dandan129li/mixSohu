@@ -1,16 +1,17 @@
 {
-  "package": "com.application.demo",
-  "name": "mixSohu",
+  "package": "com.sohu.module",
+  "name": "搜狐视频",
   "versionName": "1.0.0",
   "versionCode": "1",
   "minPlatformVersion": "101",
-  "icon": "/Common/logo.png",
+  "icon": "/Common/logoB.png",
   "features": [
     { "name": "system.prompt" }
     ,{ "name": "system.router" }
     ,{ "name": "system.shortcut" }
     ,{ "name": "system.fetch" }
     ,{"name": "system.device"}
+    ,{"name": "system.share"}
     ,{"name": "system.network"}
   ],
   "permissions": [

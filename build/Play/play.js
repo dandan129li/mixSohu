@@ -3087,7 +3087,6 @@
 	  ".header .share_area": {
 	    "marginRight": "24px",
 	    "alignItems": "center",
-	    "alignSelf": "flex-end",
 	    "_meta": {
 	      "ruleDef": [
 	        {
