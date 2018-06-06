@@ -436,7 +436,7 @@
 	                            {
 	                              "type": "text",
 	                              "attr": {
-	                                "value": "加载更多"
+	                                "value": "更多视频信息请使用搜狐视频app"
 	                              }
 	                            }
 	                          ]
@@ -1514,6 +1514,9 @@
 	
 	    var that = this;
 	    that.isRefreshing = e.refreshing;
+	    _system2.default.showToast({
+	      message: '更多视频信息请使用搜狐视频app'
+	    });
 	    this.chlData('fresh');
 	    if (this.timer === null) {
 	      this.timer = setTimeout(function () {
@@ -3419,7 +3422,7 @@
 	 * 播放信息
 	 * https://api.tv.sohu.com/phone_playinfo
 	 */
-	var useM3u8 = false;
+	var useM3u8 = true;
 	var util = {
 	  isArray: function (obj) {
 	    return Object.prototype.toString.call(obj) === '[object Array]';

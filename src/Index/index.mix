@@ -54,7 +54,7 @@
       </list-item>
       <list-item type="loadMore" class="load-more" if="{{loadingMore}}">
           <progress type="circular"></progress>
-          <text>加载更多</text>
+          <text>更多视频信息请使用搜狐视频app</text>
       </list-item>
      </list>
      </refresh>

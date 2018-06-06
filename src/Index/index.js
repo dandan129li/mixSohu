@@ -336,6 +336,9 @@ module.exports = {
     refresh: function(e){
       var that = this;
       that.isRefreshing = e.refreshing
+      prompt.showToast({
+        message: '更多视频信息请使用搜狐视频app'
+      })
       this.chlData('fresh');
       if (this.timer === null) {
         this.timer = setTimeout(() => {
